@@ -1,0 +1,255 @@
+<div class="d-flex">
+ <!-- Main Area -->
+<div class="flex-grow-1 p-3">
+  <div class="container py-5 d-flex align-items-center flex-wrap">
+    <div class="col-md-6">
+      <h1 class="display-5 fw-bold">Book Your Doctor Appointment Easily</h1>
+      <button mat-raised-button color="primary" (click)="toggleForm()" > {{ showForm ? 'Goback' : 'Book Appointment' }}
+</button>
+
+      <button mat-stroked-button color="accent" (click)="toggleAppointments()" class=" ms-3">
+  {{ showAppointments ? 'Hide Appointments' : 'View My Appointments' }}
+</button>
+
+    </div>
+    <div class="col-md text-center">
+      <img src="https://res.cloudinary.com/daf1fkwp5/image/upload/v1722231744/sunstar_35db78b754.jpg" alt="Doctor"
+        class="img-fluid rounded-circle shadow" height="100" width="100">
+    </div>
+  </div>
+
+
+
+  <!-- How It Works Section -->
+  <div class="container py-5" *ngIf="!showForm && !showAppointments">
+    <h3 class="fw-bold mb-4">How It Works</h3>
+    <div class="d-flex align-items-center justify-content-around flex-wrap text-center">
+      <div><mat-icon>person_search</mat-icon><p>Select a Doctor</p></div>
+      <div><mat-icon>arrow_forward</mat-icon></div>
+      <div><mat-icon>event</mat-icon><p>Pick a Time</p></div>
+      <div><mat-icon>arrow_forward</mat-icon></div>
+      <div><mat-icon>check_circle</mat-icon><p>Confirm Appointment</p></div>
+    </div>
+  </div>
+
+  <!-- Specialties Showcase -->
+  <div class="container py-3 text-center" *ngIf="!showForm && !showAppointments ">
+    <h5 class="mb-3">Popular Specialties</h5>
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      <button mat-stroked-button color="primary">Cardiologist</button>
+      <button mat-stroked-button color="primary">Dermatologist</button>
+      <button mat-stroked-button color="primary">Dentist</button>
+      <button mat-stroked-button color="primary">Neurologist</button>
+      <button mat-stroked-button color="primary">Pediatrician</button>
+    </div>
+  </div>
+
+  <!-- Testimonials Section -->
+
+  <div class="container py-5 bg-light rounded mt-4" *ngIf="!showForm && !showAppointments">
+    <h4 class="fw-bold text-center mb-4">What Our Patients Say</h4>
+    <div class="d-flex justify-content-around flex-wrap text-center">
+      <div class="p-3" style="max-width: 250px;">
+        <p>"Super easy to book, and the doctor was very helpful!"</p>
+        <small>- Alex R.</small>
+      </div>
+      <div class="p-3" style="max-width: 250px;">
+        <p>"Saved me so much time. Highly recommend."</p>
+        <small>- Priya M.</small>
+      </div>
+      <div class="p-3" style="max-width: 250px;">
+        <p>"Clean UI and efficient booking. 10/10."</p>
+        <small>- Omar K.</small>
+      </div>
+    </div>
+  </div>
+
+ 
+    
+  <!-- FAQs Section -->
+
+<mat-accordion class="container my-4" *ngIf="!showForm && !showAppointments">
+  <h4 class="fw-bold mb-3">Frequently Asked Questions</h4>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Can I reschedule my appointment?</mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>Yes, you can reschedule anytime before your appointment through your account.</p>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Is there a cancellation fee?</mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>No, we don’t charge cancellation fees.</p>
+  </mat-expansion-panel>
+</mat-accordion>
+
+
+
+
+<!-- My Appointments Section -->
+<div class="container py-4" *ngIf="showAppointments  && !showForm ">
+  <h3 class="fw-bold mb-4">My Appointments</h3>
+  <div *ngIf="bookedAppointments.length > 0; else noAppointments">
+    <div *ngFor="let appt of bookedAppointments; let i = index" class="card mb-3 shadow-sm position-relative">
+      <div class="card-body">
+        <!-- Top-right buttons -->
+        <div class="position-absolute top-0 end-0 p-2 d-flex gap-2">
+          <button mat-icon-button color="primary"  matTooltip="Edit"  data-bs-toggle="modal"
+          data-bs-target="#bookingEditModal"  (click)="openEditModal(appt,i)" >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" matTooltip="Delete" (click)="deleteBooking(appt._id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        
+        <!-- Appointment Info -->
+        <h5 class="card-title">{{ appt.name }} (Age: {{ appt.age }})</h5>
+        <p class="mb-1"><strong>Date:</strong> {{ appt.date | date  }}</p>
+        <p class="mb-1"><strong>Time:</strong> {{ appt.time }}</p>
+        <p class="mb-1"><strong>Doctor:</strong> {{ appt.doctor }} </p>
+         <!-- Status with different styles -->
+        <p class="mb-2">
+          <strong>Status:</strong>
+          <span [ngClass]="{
+            'badge bg-warning text-dark': appt.status === 'Status waiting',
+            'badge bg-info text-dark': appt.status === 'processing for confirmation',
+            'badge bg-danger': appt.status === 'Staus pending...',
+            
+            
+          }">
+            {{ appt.status }}
+          </span>
+        </p>
+        <p class="mb-0 text-muted"><strong>Contact:</strong> {{ appt.phone }} | {{ appt.email }}</p>
+        <p class="mb-1" *ngIf="appt.notes"><strong>Note:</strong> {{ appt.notes }}</p>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noAppointments>
+    <p class="text-muted">No appointments booked yet.</p>
+  </ng-template>
+</div>
+
+  <!-- Appointment Form -->
+  <div class="container" *ngIf="showForm && !showAppointments " >
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form [formGroup]="appointmentForm" (ngSubmit)="addBooking()" class="mt-4">
+          <mat-form-field class="w-100"><input matInput placeholder="Name" formControlName="name"></mat-form-field>
+          <mat-form-field class="w-100"><input matInput placeholder="Age" formControlName="age" type="number"></mat-form-field>
+          <mat-form-field class="w-100">
+            <mat-select placeholder="Select Doctor" formControlName="doctor">
+              <mat-option *ngFor="let doc of formValueDoc" [value]="doc.name">{{ doc.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="w-100">
+            <input matInput [matDatepicker]="picker" placeholder="Select Date" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="w-100"><input matInput type="time" formControlName="time" placeholder="Select Time"></mat-form-field>
+          <mat-form-field class="w-100"><input matInput placeholder="Phone" formControlName="phone" type="tel"></mat-form-field>
+          <mat-form-field class="w-100"><input matInput placeholder="Email" formControlName="email" type="email"></mat-form-field>
+          <mat-form-field class="w-100"><textarea matInput placeholder="Notes" formControlName="notes"></textarea></mat-form-field>
+          <button mat-raised-button color="accent" type="submit" class="w-100" [disabled]="!appointmentForm.valid">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  <!-- Sidebar -->
+
+
+  <div class="p-3 border-start" style="width: 320px;">
+    <mat-form-field class="w-100" appearance="fill">
+      <input matInput placeholder="Search Doctor" [(ngModel)]="searchQuery" (ngModelChange)="filterDoctors()">
+    </mat-form-field>
+
+    <div *ngFor="let doctor of filteredDoctors| slice:0:11; let i=index;"   class="py-3 border-bottom d-flex align-items-center">
+      <img [src]="doctor.image" alt="{{ doctor.name }}" width="60" height="60" class="rounded-circle me-3 border"
+        style="object-fit: cover;" />
+      <div>
+        <p class="mb-1  fs-5">{{ doctor.name }}</p>
+        <p class="mb-0 text-muted fs-6">{{ doctor.specialty }}</p>
+      </div>
+    </div>
+  </div>
+
+  
+<!-- Edit Booking Modal -->
+<div class="modal fade" id="bookingEditModal" tabindex="-1" aria-labelledby="editBookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editDoctorModalLabel">Update Booking Details</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <form [formGroup]="appointmentForm">
+          
+          <!-- Patient Name -->
+          <div class="mb-3">
+            <label class="form-label">Patient Name</label>
+            <input type="text" class="form-control" formControlName="name" required />
+          </div>
+
+          <!-- Age -->
+          <div class="mb-3">
+            <label class="form-label">Age</label>
+            <input type="number" class="form-control" formControlName="age" required />
+          </div>
+
+          <!-- Doctor -->
+          <div class="mb-3">
+            <label class="form-label">Doctor</label>
+            <input type="text" class="form-control" formControlName="doctor" required />
+          </div>
+
+          <!-- Date -->
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" formControlName="date" required />
+          </div>
+
+          <!-- Time -->
+          <div class="mb-3">
+            <label class="form-label">Time</label>
+            <input type="time" class="form-control" formControlName="time" required />
+          </div>
+
+          <!-- Phone -->
+          <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" class="form-control" formControlName="phone" required />
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" formControlName="email" required />
+          </div>
+
+          <!-- Notes -->
+          <div class="mb-3">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" rows="2" formControlName="notes"></textarea>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="editbooking()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+

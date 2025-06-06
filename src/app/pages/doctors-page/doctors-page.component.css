@@ -1,0 +1,26 @@
+mat-card img {
+    width: 120px;
+    height: 120px;
+    object-fit:cover;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 16px auto; /* center image and add bottom margin */
+  }
+  
+  mat-card {
+    padding: 24px;
+  }
+
+  button {
+    margin-right: 8px;
+  }
+  ::ng-deep .snack-success {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  ::ng-deep .snack-error {
+    background-color: #f44336;
+    color: white;
+  }
+  

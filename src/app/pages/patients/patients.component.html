@@ -1,0 +1,179 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <!-- Patient Form Section -->
+  <mat-card class="p-4">
+    <h3 class="text-xl mb-4">{{ isEditMode ? 'Update Patient' : 'Add Patient' }}</h3>
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+      <div class="grid grid-cols-1 gap-4">
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Age</mat-label>
+          <input matInput type="number" formControlName="age" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Gender</mat-label>
+          <mat-select formControlName="gender">
+            <mat-option value="Male">Male</mat-option>
+            <mat-option value="Female">Female</mat-option>
+            <mat-option value="Other">Other</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Contact</mat-label>
+          <input matInput formControlName="contact" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Admitted Date</mat-label>
+          <input matInput [matDatepicker]="admitPicker" formControlName="admitted" />
+          <mat-datepicker-toggle matSuffix [for]="admitPicker"></mat-datepicker-toggle>
+          <mat-datepicker #admitPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Discharged Date</mat-label>
+          <input matInput [matDatepicker]="dischargePicker" formControlName="discharged" />
+          <mat-datepicker-toggle matSuffix [for]="dischargePicker"></mat-datepicker-toggle>
+          <mat-datepicker #dischargePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Total Expenses</mat-label>
+          <input matInput type="number" formControlName="expenses" />
+        </mat-form-field>
+
+        <div class="flex gap-2 mt-2">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!patientForm.valid">
+            {{ isEditMode ? 'Update Patient' : 'Add Patient' }}
+          </button>
+          <button mat-button type="button" (click)="clearForm()">Clear</button>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+  
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <label for="itemsPerPage">Items per page:</label>
+      <select id="itemsPerPage" [value]="itemsPerPage" (change)="updateItemsPerPage($event)">
+        <option [value]="10">10</option>
+        <option [value]="20">20</option>
+        <option [value]="30">30</option>
+        <option [value]="50">50</option>
+      </select>
+    </div>
+    <div>
+      <p>{{ getDisplayRange() }}</p>
+    </div>
+    <div>
+      <button mat-button type="button" (click)="previousPage()" [disabled]="pageNumber === 1">
+        Previous
+      </button>
+      <button mat-button type="button" (click)="nextPage()" [disabled]="pageNumber >= (totalItems / itemsPerPage)">
+        Next
+      </button>
+    </div>
+  </div>
+  <!-- Patient List Section -->
+  <mat-card class="mt-2 ms-1 me-1">
+    <mat-table [dataSource]="paginatedPatients" *ngIf="paginatedPatients.length>0;else noPatients" class="mat-elevation-z8">
+
+     
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let patient"> {{patient.name}} </mat-cell>
+      </ng-container>
+
+      <!-- Age Column -->
+      <ng-container matColumnDef="age">
+        <mat-header-cell *matHeaderCellDef> Age </mat-header-cell>
+        <mat-cell *matCellDef="let patient"> {{patient.age}} </mat-cell>
+      </ng-container>
+
+      <!-- Gender Column -->
+      <ng-container matColumnDef="gender">
+        <mat-header-cell *matHeaderCellDef> Gender </mat-header-cell>
+        <mat-cell *matCellDef="let patient"> {{patient.gender}} </mat-cell>
+      </ng-container>
+
+      <!-- Contact Column -->
+      <ng-container matColumnDef="contact">
+        <mat-header-cell *matHeaderCellDef> Contact </mat-header-cell>
+        <mat-cell *matCellDef="let patient"> {{patient.contact}} </mat-cell>
+      </ng-container>
+
+      <!-- Admitted Column -->
+      <ng-container matColumnDef="admitted">
+        <mat-header-cell *matHeaderCellDef> Admitted </mat-header-cell>
+        <mat-cell *matCellDef="let patient"> {{patient.admitted | date}} </mat-cell>
+      </ng-container>
+
+      <!-- Discharged Column -->
+      <ng-container matColumnDef="discharged">
+        <mat-header-cell *matHeaderCellDef> Discharged </mat-header-cell>
+        <mat-cell *matCellDef="let patient"> {{patient.discharged | date}} </mat-cell>
+      </ng-container>
+
+      <!-- Expenses Column -->
+      <ng-container matColumnDef="expenses">
+        <mat-header-cell *matHeaderCellDef> Expenses </mat-header-cell>
+        <mat-cell *matCellDef="let patient"> {{patient.expenses | currency:'INR'}} </mat-cell>
+      </ng-container>
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let patient  let i=index ">
+          <button mat-icon-button [matMenuTriggerFor]="actionMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #actionMenu="matMenu">
+            <button mat-menu-item (click)="StartEdit(patient,i)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item data-bs-toggle="modal" data-bs-target="#deleteRecordModal"
+              (click)="prepareDelete(patient._id)">
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+        </mat-cell>
+      </ng-container>
+
+
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; let i = index; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card>
+  <ng-template #noPatients>
+    <p class="text-muted">No Patients added yet.</p>
+  </ng-template>
+</div>
+
+<!-- DeleteModal -->
+<div class="modal fade" id="deleteRecordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Record?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure do you want delete this Record?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+          (click)="deletePatientRecord(patientIdToDelete)">Delete Record</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+
+      </div>
+    </div>
+  </div>
+</div>

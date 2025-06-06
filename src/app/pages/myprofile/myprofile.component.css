@@ -1,0 +1,109 @@
+/* 
+.profile-card {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background-color: #fafafa;
+}
+
+.profile-title {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.profile-content p {
+  margin: 0.5rem 0;
+  font-size: 16px;
+}
+
+.profile-content ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 1rem 0;
+}
+
+.profile-content li {
+  background-color: #f0f0f0;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+} */
+.profile-container {
+  height: 100vh;
+  display: flex;
+}
+
+.drawer-container {
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #1e88e5;
+  color: white;
+  padding: 1rem;
+}
+
+.sidebar h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.content-area {
+  padding: 2rem;
+  background: #f1f5f9;
+}
+
+.profile-card {
+  max-width: 800px;
+  margin: auto;
+  padding: 1.5rem;
+  animation: fadeIn 0.8s ease-in-out;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+}
+
+.profile-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.empty-msg {
+  color: gray;
+  font-style: italic;
+  padding: 1rem 0;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease;
+}
+ .notification-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* adds spacing between cards */
+  padding: 10px;
+}
+
+.notification-card {
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

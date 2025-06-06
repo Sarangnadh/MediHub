@@ -1,0 +1,33 @@
+form input, form textarea {
+    transition: box-shadow 0.3s ease;
+  }
+  form input:focus, form textarea:focus {
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #80bdff;
+  }
+ /* styles.css */
+#toast-container > .toast-success {
+  background-color: #28a745 !important;
+  color: white !important;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  border-radius: 8px;
+}
+
+#toast-container > .toast-success .toast-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+#toast-container > .toast-success .toast-message {
+  font-size: 14px;
+}
+
+#toast-container {
+  top: 80px;
+  right: 20px;
+}
+
+#toast-container > div {
+  transition: all 0.3s ease-in-out;
+}

@@ -1,0 +1,190 @@
+<div class="admin-dashboard">
+    <aside class="sidebar">
+        <h2>Hospital</h2>
+        <nav>
+            <ul>
+                <li><a routerLink="/admin-dashboard" routerLinkActive="active"
+                        [class.active]="activeMenu === 'dashboard'" (click)="setActiveMenu('dashboard')">Dashboard</a>
+                </li>
+                <li><a routerLink="/users" routerLinkActive="active" [class.active]="activeMenu === 'users'"
+                        (click)="setActiveMenu('users')">Users</a></li>
+                <li> <a (click)="toggleAppointments()" [class.active]="activeMenu === 'appointments'">Appointments</a>
+                </li>
+                <li><a routerLink="/patientsDetails" routerLinkActive="active"
+                        [class.active]="activeMenu === 'patients'" (click)="setActiveMenu('patients')">Patients</a></li>
+                <li><a routerLink="/doctors" routerLinkActive="active" [class.active]="activeMenu === 'doctors'"
+                        (click)="setActiveMenu('doctors')">Doctors</a></li>
+                <li><a routerLink="/reports" routerLinkActive="active" [class.active]="activeMenu === 'reports'"
+                        (click)="setActiveMenu('reports')">Reports</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h1>Dashboard</h1>
+            <input type="text" placeholder="Search..." />
+        </header>
+
+        <section class="stats">
+            <div class="card">
+                <h3>Total Patients</h3>
+                <p>{{ totalPatients }}</p>
+            </div>
+            <div class="card">
+                <h3>Total Appointments</h3>
+                <p>{{ totalAppointments }}</p>
+            </div>
+            <div class="card">
+                <h3>Active Doctors</h3>
+                <p>{{ activeDoctors }}</p>
+            </div>
+        </section>
+
+
+        <section class="charts" *ngIf="!showAppointments">
+            <div class="chart-card">
+                <apx-chart *ngIf="lineChartOptions" [series]="lineChartOptions.series" [chart]="lineChartOptions.chart"
+                    [xaxis]="lineChartOptions.xaxis">
+                </apx-chart>
+            </div>
+            <div class="chart-card">
+                <apx-chart *ngIf="pieChartOptions" [series]="pieChartOptions.series" [chart]="pieChartOptions.chart"
+                    [labels]="pieChartOptions.labels" [responsive]="pieChartOptions.responsive">
+                </apx-chart>
+            </div>
+        </section>
+
+        <section class="appointments" *ngIf="!showAppointments">
+            <h3>Recent Appointments</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let appointment of recentAppointments">
+                        <td>{{ appointment.name }}</td>
+                        <td>{{ appointment.doctor }}</td>
+                        <td>{{ appointment.date | date }}</td>
+                        <td>{{ appointment.time  }}</td>
+
+                        <td><span [ngClass]="{
+                             'badge bg-warning text-dark': appointment.status === 'Status waiting',
+            'badge bg-info text-dark': appointment.status === 'processing for confirmation',
+            'badge bg-danger': appointment.status === 'Staus pending...',
+             'badge bg-secondary': appointment.status === 'pending for Approving.',
+            'badge bg-success': appointment.status === 'Approved',
+            'badge bg-dark': appointment.status === 'Booking Rejected'
+               }">{{ appointment.status }} </span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="appointments p-4 rounded shadow bg-light" *ngIf="!showAppointments">
+            <h3 class="mb-4 text-primary fw-bold">Recent Appointments</h3>
+            <table class="table table-hover table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Update Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let appointment of recentAppointments" [@fadeIn]>
+                        <td>{{ appointment.name }}</td>
+                        <td>{{ appointment.doctor }}</td>
+                        <td>{{ appointment.date | date:'short' }}</td>
+                        <td>{{appointment.time}}</td>
+                        <td>
+                            <span [ngClass]="{
+            'badge bg-warning text-dark': appointment.status === 'Status waiting',
+            'badge bg-info text-dark': appointment.status === 'processing for confirmation',
+            'badge bg-danger': appointment.status === 'Staus pending...',
+             'badge bg-secondary': appointment.status === 'pending for Approving.',
+            'badge bg-success': appointment.status === 'Approved',
+            'badge bg-dark': appointment.status === 'Booking Rejected'
+          }">
+                                {{ appointment.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <select class="form-select" [(ngModel)]="appointment.status"
+                                [disabled]="appointment.status === 'Approved'" (change)="selectStatus()">
+                                <option disabled selected value="">Select Status</option>
+                                <option>Approved</option>
+                                <option>pending for Approving.</option>
+                                <option>Status waiting</option>
+                                <option>Staus pending...</option>
+                                <option>processing for confirmation</option>
+                                <option>Booking Rejected</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-end mt-3">
+                <button class="btn btn-primary"[disabled]="!selectStatus()" (click)="updateStatus()">
+                    Update Status
+                </button>
+            </div>
+        </section>
+
+        <!-- My Appointments Section -->
+        <div class="container py-4" *ngIf="showAppointments">
+            <h3 class="fw-bold mb-4">My Appointments</h3>
+            <div *ngIf="bookedAppointments.length > 0; else noAppointments">
+                <div *ngFor="let appt of bookedAppointments; let i = index"
+                    class="card mb-3 shadow-sm position-relative">
+                    <div class="card-body">
+                        <!-- Top-right buttons -->
+                        <div class="position-absolute top-0 end-0 p-2 d-flex gap-2">
+                            <button mat-icon-button color="primary" matTooltip="Edit" data-bs-toggle="modal"
+                                data-bs-target="#bookingEditModal" (click)="openEditModal(appt,i)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" matTooltip="Delete" (click)="deleteBooking(appt._id)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                        <!-- Appointment Info -->
+                        <h5 class="card-title">{{ appt.name }} (Age: {{ appt.age }})</h5>
+                        <p class="mb-1"><strong>Date:</strong> {{ appt.date | date }}</p>
+                        <p class="mb-1"><strong>Time:</strong> {{ appt.time }}</p>
+                        <p class="mb-1"><strong>Doctor:</strong> {{ appt.doctor }} </p>
+                        <!-- Status with different styles -->
+                        <p class="mb-2">
+                            <strong>Status:</strong>
+                            <span [ngClass]="{
+             'badge bg-warning text-dark': appt.status === 'Status waiting',
+            'badge bg-info text-dark': appt.status === 'processing for confirmation',
+            'badge bg-danger': appt.status === 'Staus pending...',
+             'badge bg-secondary': appt.status === 'pending for Approving.',
+            'badge bg-success': appt.status === 'Approved',
+            'badge bg-dark': appt.status === 'Booking Rejected' 
+          }">
+                                {{ appt.status }}
+                            </span>
+                        </p>
+                        <p class="mb-0 text-muted"><strong>Contact:</strong> {{ appt.phone }} | {{ appt.email }}</p>
+                        <p class="mb-1" *ngIf="appt.notes"><strong>Note:</strong> {{ appt.notes }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #noAppointments>
+                <p class="text-muted">No appointments booked yet.</p>
+            </ng-template>
+        </div>
+    </main>
+</div>

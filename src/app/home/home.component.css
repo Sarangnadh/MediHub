@@ -1,0 +1,18 @@
+mat-card img {
+    width: 100px;
+    height: 100px;
+    object-fit:cover;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 16px auto; /* center image and add bottom margin */
+  }
+
+  .feature-box {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .feature-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+  
