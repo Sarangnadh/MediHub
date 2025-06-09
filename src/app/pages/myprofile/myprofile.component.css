@@ -1,64 +1,17 @@
-/* 
-.profile-card {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  background-color: #fafafa;
-}
-
-.profile-title {
-  font-size: 24px;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.profile-content p {
-  margin: 0.5rem 0;
-  font-size: 16px;
-}
-
-.profile-content ul {
-  list-style-type: none;
-  padding-left: 0;
-  margin: 1rem 0;
-}
-
-.profile-content li {
-  background-color: #f0f0f0;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  border-radius: 8px;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  justify-content: center;
-} */
-.profile-container {
+:host {
+  display: block;
   height: 100vh;
-  display: flex;
 }
 
 .drawer-container {
-  width: 100%;
-  height: 100%;
+  height: calc(100% - 64px); /* account for toolbar */
 }
 
 .sidebar {
   width: 250px;
-  background-color: #1e88e5;
+  background-color: #1976d2;
   color: white;
   padding: 1rem;
-}
-
-.sidebar h2 {
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
 }
 
 .content-area {
@@ -73,27 +26,14 @@
   animation: fadeIn 0.8s ease-in-out;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   border-radius: 16px;
+  background: white;
 }
 
-.profile-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.empty-msg {
-  color: gray;
-  font-style: italic;
-  padding: 1rem 0;
-}
-
-.animate-fade-in {
-  animation: fadeIn 1s ease;
-}
- .notification-container {
+.notification-container {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* adds spacing between cards */
-  padding: 10px;
+  gap: 16px;
+  padding: 10px 0;
 }
 
 .notification-card {
@@ -102,6 +42,44 @@
   border-radius: 8px;
 }
 
+.empty-msg {
+  color: gray;
+  font-style: italic;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.mobile-toggle {
+  display: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .mobile-toggle {
+    display: inline-flex;
+  }
+
+  .sidebar h2 {
+    font-size: 1.2rem;
+  }
+
+  .content-area {
+    padding: 1rem;
+  }
+
+  .accordion {
+    margin-top: 1rem;
+  }
+}
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }

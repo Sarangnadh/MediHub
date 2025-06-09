@@ -1,122 +1,129 @@
-<!-- 
+<mat-toolbar color="primary" class="mat-elevation-z4">
+  <span>👤 My Profile</span>
+  <span class="spacer"></span>
+  <button mat-icon-button (click)="drawer.toggle()" class="mobile-toggle">
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
 
-<mat-card class="profile-card">
-  <mat-card-title class="profile-title">My Profile</mat-card-title>
-  <mat-card-content class="profile-content">
-    <p><strong>Username:</strong> {{ name }}</p>
-    <p><strong>Email:</strong> {{ email }}</p>
+<mat-drawer-container class="drawer-container">
+  <mat-drawer #drawer class="sidebar" [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile">
+    <h2>Menu</h2>
+    <mat-nav-list>
+      <mat-list-item (click)="selectedTab = 0"><mat-icon matListIcon>event</mat-icon> All Appointments</mat-list-item>
+      <mat-list-item (click)="selectedTab = 1"><mat-icon matListIcon>check_circle</mat-icon> Approved</mat-list-item>
+      <mat-list-item (click)="selectedTab = 2"><mat-icon matListIcon>cancel</mat-icon> Cancelled</mat-list-item>
+      <mat-list-item (click)="selectedTab = 3"><mat-icon matListIcon>notifications</mat-icon> Notifications</mat-list-item>
+    </mat-nav-list>
+  </mat-drawer>
 
-    <h3>My Appointments</h3>
-    <ul *ngIf="bookedAppointments.length > 0; else noAppointments">
-      <li *ngFor="let appt of bookedAppointments; let i = index">
-        <strong>{{ i + 1 }}<sup>st</sup> Appointment</strong> on 
-        {{ appt.date|date }} at {{ appt.time }}
-        
-      </li>
-    </ul>
-    
-    <ng-template #noAppointments>
-      <p>No appointments found.</p>
-    </ng-template>
+  <mat-drawer-content class="content-area">
+    <mat-card class="profile-card animate-fade-in">
+      <mat-card-title class="profile-title">Welcome, {{ name }}</mat-card-title>
+      <mat-card-content>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Joined:</strong> {{ createdAt | date:'mediumDate' }}</p>
 
-    <div class="action-buttons">
-      <button mat-raised-button color="warn" routerLink="/booking">Cancel Bookings</button>
-      <button mat-raised-button color="primary" routerLink="/booking">Approved Bookings</button>
-    </div>
-  </mat-card-content>
-</mat-card> -->
+        <!-- Tabs for large screens -->
+        <mat-tab-group *ngIf="!isMobile" [(selectedIndex)]="selectedTab" animationDuration="400ms">
+          <mat-tab label="All">
+            <ng-container *ngIf="bookedAppointments.length; else noData">
+              <mat-list>
+                <mat-list-item *ngFor="let appt of bookedAppointments">
+                  📅 {{ appt.date | date }} | 🕐 {{ appt.time }} | Dr. {{ appt.doctor }}
+                </mat-list-item>
+              </mat-list>
+            </ng-container>
+          </mat-tab>
 
+          <mat-tab label="Approved">
+            <mat-list>
+              <mat-list-item *ngFor="let appt of bookedAppointments">
+                ✅ {{ appt.date | date }} with Dr. {{ appt.doctor }}
+              </mat-list-item>
+            </mat-list>
+          </mat-tab>
 
-<div class="profile-container">
-  <mat-drawer-container class="drawer-container">
-    <mat-drawer mode="side" opened class="sidebar">
-      <h2>Profile Menu</h2>
-      <mat-nav-list>
-        <mat-list-item (click)="selectedTab = 0">All Appointments</mat-list-item>
-        <mat-list-item (click)="selectedTab = 1">Approved</mat-list-item>
-        <mat-list-item (click)="selectedTab = 2">Cancelled</mat-list-item>
-        <mat-list-item (click)="selectedTab = 3">Notifications</mat-list-item>
-      </mat-nav-list>
-    </mat-drawer>
+          <mat-tab label="Cancelled">
+            <mat-list>
+              <mat-list-item *ngFor="let appt of bookedAppointments">
+                ❌ {{ appt.date | date }} - Dr. {{ appt.doctor }}
+              </mat-list-item>
+            </mat-list>
+          </mat-tab>
 
-    <mat-drawer-content class="content-area">
-      <mat-card class="profile-card animate-fade-in">
-        <mat-card-title class="profile-title">👤 My Profile</mat-card-title>
-        <mat-card-content>
-          <p><strong>Name:</strong> {{ name }}</p>
-          <p><strong>Email:</strong> {{ email }}</p>
-          <p><strong>Joined:</strong> {{ createdAt | date:'mediumDate' }}</p>
+          <mat-tab label="Notifications">
+            <ng-container *ngIf="notifications.length > 0; else noData">
+              <div class="notification-container">
+                <mat-card *ngFor="let note of notifications" class="notification-card">
+                  <mat-card-header>
+                    <mat-icon mat-card-avatar color="warn">notifications_active</mat-icon>
+                    <mat-card-title>{{ note.message }}</mat-card-title>
+                    <mat-card-subtitle>Updated: {{ note.date | date:'medium' }}</mat-card-subtitle>
+                  </mat-card-header>
+                </mat-card>
+              </div>
+            </ng-container>
+          </mat-tab>
+        </mat-tab-group>
 
-          <mat-tab-group [(selectedIndex)]="selectedTab" animationDuration="400ms">
-            <mat-tab label="All">
-              <ng-container *ngIf="bookedAppointments.length; else noData">
-                <mat-list>
-                  <mat-list-item *ngFor="let appt of bookedAppointments">
-                    📅 {{ appt.date | date }} | 🕐 {{ appt.time }} | Dr. {{ appt.doctor }}
-                  </mat-list-item>
-                </mat-list>
-              </ng-container>
-            </mat-tab>
+        <!-- Accordion for mobile -->
+        <mat-accordion *ngIf="isMobile" class="accordion">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>All Appointments</mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list *ngIf="bookedAppointments.length; else noData">
+              <mat-list-item *ngFor="let appt of bookedAppointments">
+                📅 {{ appt.date | date }} | 🕐 {{ appt.time }} | Dr. {{ appt.doctor }}
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
 
-            <mat-tab label="Approved">
-              <ng-container *ngIf="bookedAppointments.length; else noData">
-                <mat-list>
-                  <mat-list-item *ngFor="let appt of bookedAppointments">
-                    ✅ {{ appt.date | date }} with Dr. {{ appt.doctor }}
-                  </mat-list-item>
-                </mat-list>
-              </ng-container>
-            </mat-tab>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Approved</mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <mat-list-item *ngFor="let appt of bookedAppointments">
+                ✅ {{ appt.date | date }} with Dr. {{ appt.doctor }}
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
 
-            <mat-tab label="Cancelled">
-              <ng-container *ngIf="cancelledAppointments.length; else noData">
-                <mat-list>
-                  <mat-list-item *ngFor="let appt of bookedAppointments">
-                    ❌ {{ appt.date | date }} - Dr. {{ appt.doctor }}
-                  </mat-list-item>
-                </mat-list>
-              </ng-container>
-            </mat-tab>
-<!-- <mat-tab label="Notifications">
-  <ng-container *ngIf="notifications.length > 0; else noData">
-    <mat-list>
-      <mat-list-item *ngFor="let note of notifications">
-        <mat-icon matListIcon color="accent">notifications</mat-icon>
-        <div matLine>{{ note.message }}</div>
-        <p>Status updated at:{{note.date|date:'medium'}}</p>
-      </mat-list-item>
-    </mat-list>
-  </ng-container>
-  <ng-template #noData>
-    <p style="padding: 1rem; color: gray;">No notifications to display.</p>
-  </ng-template>
-</mat-tab> -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Cancelled</mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <mat-list-item *ngFor="let appt of bookedAppointments">
+                ❌ {{ appt.date | date }} - Dr. {{ appt.doctor }}
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
 
-         <mat-tab label="Notifications">
-  <ng-container *ngIf="notifications.length > 0; else noData">
-    <div class="notification-container">
-      <mat-card *ngFor="let note of notifications" class="notification-card" appearance="outlined">
-        <mat-card-header class="cardHeader">
-          <mat-icon mat-card-avatar color="warn">notifications_active</mat-icon>
-          <mat-card-title class="message-text mt-1">{{ note.message }}</mat-card-title>
-          <mat-card-subtitle class="date-text">Updated: {{ note.date | date: 'medium' }}</mat-card-subtitle>
-        </mat-card-header>
-      </mat-card>
-    </div>
-  </ng-container>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Notifications</mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-container *ngIf="notifications.length > 0; else noData">
+              <div class="notification-container">
+                <mat-card *ngFor="let note of notifications" class="notification-card">
+                  <mat-card-header>
+                    <mat-icon mat-card-avatar color="warn">notifications_active</mat-icon>
+                    <mat-card-title>{{ note.message }}</mat-card-title>
+                    <mat-card-subtitle>Updated: {{ note.date | date:'medium' }}</mat-card-subtitle>
+                  </mat-card-header>
+                </mat-card>
+              </div>
+            </ng-container>
+          </mat-expansion-panel>
+        </mat-accordion>
 
-  <ng-template #noData>
-    <p class="no-notify">No notifications to display.</p>
-  </ng-template>
-</mat-tab>
-
-          </mat-tab-group>
-
-          <ng-template #noData>
-            <p class="empty-msg">No data found.</p>
-          </ng-template>
-        </mat-card-content>
-      </mat-card>
-    </mat-drawer-content>
-  </mat-drawer-container>
-</div>
+        <ng-template #noData>
+          <p class="empty-msg">No data found.</p>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+  </mat-drawer-content>
+</mat-drawer-container>
