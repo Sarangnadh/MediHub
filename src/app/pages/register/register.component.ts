@@ -21,7 +21,6 @@ import { User } from '../../user';
 export class RegisterComponent {
   registerForm: FormGroup;
   hidePassword = true;
-  secretKeyValue = 'ADMIN123';
   isAdmin = false
   
   
@@ -60,10 +59,7 @@ onSubmit() {
     const { name, email, password, role, key } = this.registerForm.value;
 
     if (role === 'admin') {
-      if (key !== this.secretKeyValue) {
-        alert('Invalid admin secret key!');
-        return;
-      }
+    
       const adminData: Admin = { name, email, password, role: 'admin',key };
 
       this.data.registerAdmin(adminData).subscribe({
