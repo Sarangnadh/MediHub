@@ -13,22 +13,22 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class DataService {
 
-doctors = 'http://localhost:3000/doctors/getall';
-adddoctor='http://localhost:3000/doctors/add'
-editdoctor='http://localhost:3000/doctors/edit/'
-deletedoctor='http://localhost:3000/doctors/delete/';
+doctors = 'https://medihubserver.onrender.com/doctors/getall';
+adddoctor='https://medihubserver.onrender.com/doctors/add'
+editdoctor='https://medihubserver.onrender.com/doctors/edit/'
+deletedoctor='https://medihubserver.onrender.com/doctors/delete/';
 
-addpatient='http://localhost:3000/patients/addpatient'
-patientsDetails = 'http://localhost:3000/patients/getPatients';
-updatepatient='http://localhost:3000/patients/updatedPatientsDetails/'
-deletepatientData='http://localhost:3000/patients/deletePatientDetails/'
+addpatient='https://medihubserver.onrender.com/patients/addpatient'
+patientsDetails = 'https://medihubserver.onrender.com/patients/getPatients';
+updatepatient='https://medihubserver.onrender.com/patients/updatedPatientsDetails/'
+deletepatientData='https://medihubserver.onrender.com/patients/deletePatientDetails/'
 
 
-addbooking='http://localhost:3000/appointments/bookappointment'
-getbooking='http://localhost:3000/appointments/appointmentDetails'
-editbooking='http://localhost:3000/appointments/editAppointment/'
-deletebooking='http://localhost:3000/appointments/deleteAppointment/'
-allBooking='http://localhost:3000/appointments/allAppointmentDetails'
+addbooking='https://medihubserver.onrender.com/appointments/bookappointment'
+getbooking='https://medihubserver.onrender.com/appointments/appointmentDetails'
+editbooking='https://medihubserver.onrender.com/appointments/editAppointment/'
+deletebooking='https://medihubserver.onrender.com/appointments/deleteAppointment/'
+allBooking='https://medihubserver.onrender.com/appointments/allAppointmentDetails'
 
 
  registerUserUrl = 'https://medihubserver.onrender.com/user/registerUser';
