@@ -31,12 +31,12 @@ deletebooking='http://localhost:3000/appointments/deleteAppointment/'
 allBooking='http://localhost:3000/appointments/allAppointmentDetails'
 
 
- registerUserUrl = 'http://localhost:3000/user/registerUser';
-  registerAdminUrl = 'http://localhost:3000/admin/registerAdmin';
+ registerUserUrl = 'https://medihubserver.onrender.com/user/registerUser';
+  registerAdminUrl = 'https://medihubserver.onrender.com/admin/registerAdmin';
 
-  loginUserUrl = 'http://localhost:3000/user/loginUser';
-loginAdminUrl = 'http://localhost:3000/admin/loginAdmin';
-appDelAdmin='http://localhost:3000/admin/deleteAppointment/'
+  loginUserUrl = 'https://medihubserver.onrender.com/user/loginUser';
+loginAdminUrl = 'https://medihubserver.onrender.com/admin/loginAdmin';
+appDelAdmin='https://medihubserver.onrender.com/admin/deleteAppointment/'
 
   constructor(private http:HttpClient) { }
 
