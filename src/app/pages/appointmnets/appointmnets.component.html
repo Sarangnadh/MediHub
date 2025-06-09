@@ -174,3 +174,74 @@
     </div>
   </div>
 </div>
+
+<!-- Edit Booking Modal -->
+<div class="modal fade" id="bookingEditModal" tabindex="-1" aria-labelledby="editBookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editDoctorModalLabel">Update Booking Details</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="appointmentForm">
+
+          <!-- Patient Name -->
+          <div class="mb-3">
+            <label class="form-label">Patient Name</label>
+            <input type="text" class="form-control" formControlName="name" required />
+          </div>
+
+          <!-- Age -->
+          <div class="mb-3">
+            <label class="form-label">Age</label>
+            <input type="number" class="form-control" formControlName="age" required />
+          </div>
+
+          <!-- Doctor -->
+          <div class="mb-3">
+            <label class="form-label">Doctor</label>
+            <input type="text" class="form-control" formControlName="doctor" required />
+          </div>
+
+          <!-- Date -->
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" formControlName="date" required />
+          </div>
+
+          <!-- Time -->
+          <div class="mb-3">
+            <label class="form-label">Time</label>
+            <input type="time" class="form-control" formControlName="time" required />
+          </div>
+
+          <!-- Phone -->
+          <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" class="form-control" formControlName="phone" required />
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" formControlName="email" required />
+          </div>
+
+          <!-- Notes -->
+          <div class="mb-3">
+            <label class="form-label">Notes</label>
+            <textarea class="form-control" rows="2" formControlName="notes"></textarea>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="editbooking()">Save
+          changes</button>
+      </div>
+    </div>
+  </div>
+</div>
