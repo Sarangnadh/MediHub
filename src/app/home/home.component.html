@@ -1,24 +1,31 @@
-
-
 <!-- Hero Section -->
-<div class="container py-5 d-flex align-items-center flex-wrap">
-  <div class="col-md-6">
-    <h1 class="display-5 fw-bold">Book Your Doctor Appointment Easily</h1>
-    <button mat-raised-button color="primary" class="mt-3" (click)="click()">Find a Doctor</button>
-  </div>
-  <div class="col-md-6 text-center">
-    <img src="https://res.cloudinary.com/daf1fkwp5/image/upload/v1722231744/sunstar_35db78b754.jpg" alt="Doctor" class="img-fluid rounded-circle shadow" height="100" width="100">
+<div class="container py-5">
+  <div class="row align-items-center">
+    <!-- Left Text Content -->
+    <div class="col-12 col-md-6 mb-4 mb-md-0 text-center text-md-start">
+      <h1 class="display-6 fw-bold">Book Your Doctor Appointment Easily</h1>
+      <button mat-raised-button color="primary" class="mt-3" (click)="click()">Find a Doctor</button>
+    </div>
+    <!-- Right Image -->
+    <div class="col-12 col-md-6 text-center">
+      <img
+        src="https://res.cloudinary.com/daf1fkwp5/image/upload/v1722231744/sunstar_35db78b754.jpg"
+        alt="Doctor"
+        class="img-fluid rounded-circle shadow"
+        style="max-width: 250px;"
+      />
+    </div>
   </div>
 </div>
 
 <!-- Specialties Section -->
 <div class="bg-light py-5">
   <div class="container">
-    <h3 class="fw-bold mb-4">Doctor Specialties</h3>
+    <h3 class="fw-bold mb-4 text-center text-md-start">Doctor Specialties</h3>
     <div class="row g-3">
-      <div class="col-6 col-md-3" *ngFor="let specialty of specialties">
-        <mat-card class="text-center p-3">
-          <img [src]="specialty.img" alt="{{ specialty.name }}" class="mb-2 specialty-img">
+      <div class="col-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let specialty of specialties">
+        <mat-card class="text-center p-3 h-100">
+          <img [src]="specialty.img" alt="{{ specialty.name }}" class="mb-2 specialty-img" />
           <p>{{ specialty.name }}</p>
         </mat-card>
       </div>
@@ -26,33 +33,32 @@
   </div>
 </div>
 
-
-
-
-<!-- CanvasJS Chart -->
-<div class="chart-container" *ngIf="role === 'admin'">
-  <canvasjs-chart [options]="chartOptions" style="width: 100%; height: 400px;"></canvasjs-chart>
+<!-- Chart Section (Admin Only) -->
+<div class="container my-5" *ngIf="role === 'admin'">
+  <div class="chart-container">
+    <canvasjs-chart [options]="chartOptions" style="width: 100%; height: 400px;"></canvasjs-chart>
+  </div>
 </div>
 
 <!-- Why Choose Us Section -->
 <div class="container py-5 text-center">
   <h3 class="fw-bold mb-4" data-aos="fade-up">Why Choose Us?</h3>
   <div class="row g-4">
-    <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+    <div class="col-12 col-md-4" data-aos="zoom-in" data-aos-delay="100">
       <div class="feature-box p-4 border rounded shadow-sm h-100">
         <i class="bi bi-calendar-check display-5 text-primary mb-3"></i>
         <h5>Easy Booking</h5>
         <p>Schedule appointments with just a few clicks—no long wait times or calls required.</p>
       </div>
     </div>
-    <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+    <div class="col-12 col-md-4" data-aos="zoom-in" data-aos-delay="200">
       <div class="feature-box p-4 border rounded shadow-sm h-100">
         <i class="bi bi-shield-check display-5 text-success mb-3"></i>
         <h5>Verified Doctors</h5>
         <p>All our doctors are licensed and thoroughly vetted for your safety and trust.</p>
       </div>
     </div>
-    <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+    <div class="col-12 col-md-4" data-aos="zoom-in" data-aos-delay="300">
       <div class="feature-box p-4 border rounded shadow-sm h-100">
         <i class="bi bi-clock-history display-5 text-warning mb-3"></i>
         <h5>24/7 Support</h5>
