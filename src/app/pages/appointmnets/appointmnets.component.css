@@ -1,18 +1,93 @@
+/* General image styling */
+img.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
 mat-card img {
-    width: 100%;
-    height: 100px;
-    object-fit:cover;
-    border: radius 30px;
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 30px;
+  display: block;
+  margin: 0 auto 16px auto;
+}
+
+/* Snackbar custom styles */
+.snack-success {
+  background-color: #4caf50;
+  color: white;
+}
+
+.snack-error {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Responsive modal scroll */
+.modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Adjust sidebar on small screens */
+@media (max-width: 992px) {
+  .d-flex {
+    flex-direction: column !important;
+  }
+
+  .p-3.border-start {
+    width: 100% !important;
+    border-left: none !important;
+    border-top: 1px solid #ccc;
+    margin-top: 1rem;
+  }
+}
+
+/* Responsive form and modal layout */
+@media (max-width: 768px) {
+  .container,
+  .form-control,
+  .mat-form-field,
+  .mat-select,
+  button {
+    width: 100% !important;
+  }
+
+  .modal-dialog {
+    max-width: 95% !important;
+  }
+
+  .card .position-absolute.top-0.end-0 {
+    position: static !important;
+    margin-top: 10px;
+    justify-content: center;
+  }
+
+  .d-flex.justify-content-around.flex-wrap,
+  .d-flex.align-items-center.flex-wrap {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .d-flex.align-items-center img {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Responsive testimonial cards */
+@media (max-width: 576px) {
+  .p-3 {
+    max-width: 100% !important;
+  }
+
+  .rounded-circle.me-3 {
+    margin: 0 auto 0.5rem auto;
     display: block;
-    margin: 0 auto 16px auto; /* center image and add bottom margin */
   }
-  .snack-success {
-    background-color: #4caf50;
-    color: white;
+
+  .text-center .fs-5 {
+    font-size: 1rem;
   }
-  
-  .snack-error {
-    background-color: #f44336;
-    color: white;
-  }
-  
+}
