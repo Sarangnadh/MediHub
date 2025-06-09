@@ -1,42 +1,60 @@
 <div class="bg-light py-5">
   <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- Header -->
+    <div
+      class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
       <h3 class="fw-bold mb-0">Featured Doctors</h3>
-      <button class="btn btn-success rounded-1px" data-bs-toggle="modal" data-bs-target="#addDoctorModal" (click)="addNewData()">ADD
-        Doctor</button>
-        
+      <button class="btn btn-success rounded-1" data-bs-toggle="modal" data-bs-target="#addDoctorModal"
+        (click)="addNewData()">
+        ADD Doctor
+      </button>
     </div>
-    <div class="row g-4" *ngIf="featuredDoctors.length>0; else noDoctor">
-      <div class="col-md-4" *ngFor="let doctor of featuredDoctors let i=index">
-        <mat-card class="text-center p-3">
-          <img [src]="doctor.image" class="rounded-circle mb-3" width="80" height="80" alt="Doctor photo">
-          <h5>{{ doctor.name }}</h5>
-          <p>{{ doctor.specialty }}</p>
-          <p>Experience: {{ doctor.experience }}</p>
-          <p>Available:{{doctor.day}}</p>
-          <div class="d-flex justify-content-center gap-2 mt-3">
-            <button mat-raised-button color="primary" data-bs-toggle="modal"
-              data-bs-target="#editDoctorModal" (click)="openEditModal(doctor,i)">Edit</button>
-            <button mat-raised-button color="warn" (click)="deleteDoctor(doctor._id)" >Delete</button>
+
+    <!-- Doctor Cards -->
+    <div class="row g-4" *ngIf="featuredDoctors.length > 0; else noDoctor">
+      <div class="col-sm-6 col-lg-4" *ngFor="let doctor of featuredDoctors; let i = index">
+        <mat-card class="text-center p-3 shadow-sm h-100">
+          <img [src]="doctor.image" alt="Doctor photo" />
+          <h5 class="fw-semibold">{{ doctor.name }}</h5>
+          <p class="text-muted mb-1">{{ doctor.specialty }}</p>
+          <p class="mb-1">
+            <strong>Experience:</strong> {{ doctor.experience }} yrs
+          </p>
+
+          <!-- Wrapped Available Days -->
+          <p class="available-days">
+            <strong>Available:</strong>
+            <span class="badge bg-secondary me-1 mb-1" *ngFor="let d of doctor.day">{{ d }}</span>
+          </p>
+
+          <div class="d-flex justify-content-center gap-2 mt-3 buttons-container">
+            <button mat-raised-button color="primary" data-bs-toggle="modal" data-bs-target="#editDoctorModal"
+              (click)="openEditModal(doctor, i)">
+              Edit
+            </button>
+            <button mat-raised-button color="warn" (click)="deleteDoctor(doctor._id)">
+              Delete
+            </button>
           </div>
         </mat-card>
       </div>
     </div>
+
+    <!-- No Doctor Fallback -->
+    <ng-template #noDoctor>
+      <p class="text-muted text-center mt-4">No Doctor added yet.</p>
+    </ng-template>
   </div>
-  <ng-template #noDoctor>
-    <p class="text-muted">No Doctor added yet.</p>
-  </ng-template>
 </div>
 
 
 
-
-<!-- ADD Doctor Modal -->
+<!-- Add/Edit Doctor Modal -->
 <div class="modal fade" id="addDoctorModal" tabindex="-1" aria-labelledby="addDoctorModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered modal-responsive">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="addDoctorModalLabel">Insert New Doctor Details</h1>
+        <h5 class="modal-title" id="addDoctorModalLabel">Insert New Doctor Details</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -44,40 +62,44 @@
           <!-- Name -->
           <div class="mb-3">
             <label for="doctorName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="doctorName" formControlName="doctorName" name="name" required />
+            <input type="text" class="form-control" id="doctorName" formControlName="doctorName" required />
           </div>
+
           <!-- Specialty -->
           <div class="mb-3">
             <label for="doctorSpecialty" class="form-label">Specialty</label>
-            <input type="text" class="form-control" id="doctorSpecialty" name="specialty"
-              formControlName="doctorSpecialty" required />
+            <input type="text" class="form-control" id="doctorSpecialty" formControlName="doctorSpecialty" required />
           </div>
+
           <!-- Image -->
           <div class="mb-3">
             <label for="doctorImage" class="form-label">Image URL</label>
-            <input type="text" class="form-control" id="doctorImage" formControlName="doctorImage" name="image"
-              required />
+            <input type="text" class="form-control" id="doctorImage" formControlName="doctorImage" required />
           </div>
+
           <!-- Experience -->
           <div class="mb-3">
             <label for="doctorExperience" class="form-label">Experience (years)</label>
             <input type="number" class="form-control" id="doctorExperience" formControlName="doctorExperience"
-              name="experience" required />
+              required />
           </div>
+
           <!-- Available Days -->
           <div class="mb-3">
             <label class="form-label">Available Days</label>
-            <div *ngFor="let day of allDays">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" [value]="day" (change)="onDayToggle(day, $event)"
-                  [checked]="isDaySelected(day)" />
-                <label class="form-check-label">{{ day }}</label>
+            <div class="row">
+              <div class="col-6" *ngFor="let day of allDays">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" [value]="day" (change)="onDayToggle(day, $event)"
+                    [checked]="isDaySelected(day)" />
+                  <label class="form-check-label">{{ day }}</label>
+                </div>
               </div>
             </div>
           </div>
         </form>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer d-flex justify-content-between">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!doctorDetailsForm.valid"
           (click)="addDoctor()">Save</button>
@@ -87,54 +109,59 @@
 </div>
 
 
-
 <!-- Edit Doctor Modal -->
 <div class="modal fade" id="editDoctorModal" tabindex="-1" aria-labelledby="editDoctorModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered modal-responsive">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="editDoctorModalLabel">Edit Doctor Details</h1>
+        <h5 class="modal-title" id="editDoctorModalLabel">Edit Doctor Details</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+
       <div class="modal-body">
         <form [formGroup]="doctorDetailsForm">
           <!-- Name -->
           <div class="mb-3">
             <label for="doctorName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="doctorName" formControlName="doctorName" name="name" required />
+            <input type="text" class="form-control" id="doctorName" formControlName="doctorName" required />
           </div>
+
           <!-- Specialty -->
           <div class="mb-3">
             <label for="doctorSpecialty" class="form-label">Specialty</label>
-            <input type="text" class="form-control" id="doctorSpecialty" name="specialty"
-              formControlName="doctorSpecialty" required />
+            <input type="text" class="form-control" id="doctorSpecialty" formControlName="doctorSpecialty" required />
           </div>
+
           <!-- Image -->
           <div class="mb-3">
             <label for="doctorImage" class="form-label">Image URL</label>
-            <input type="text" class="form-control" id="doctorImage" formControlName="doctorImage" name="image"
-              required />
+            <input type="text" class="form-control" id="doctorImage" formControlName="doctorImage" required />
           </div>
+
           <!-- Experience -->
           <div class="mb-3">
             <label for="doctorExperience" class="form-label">Experience (years)</label>
             <input type="number" class="form-control" id="doctorExperience" formControlName="doctorExperience"
-              name="experience" required />
+              required />
           </div>
+
           <!-- Available Days -->
           <div class="mb-3">
             <label class="form-label">Available Days</label>
-            <div *ngFor="let day of allDays">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" [value]="day" (change)="onDayToggle(day, $event)"
-                  [checked]="isDaySelected(day)" />
-                <label class="form-check-label">{{ day }}</label>
+            <div class="row">
+              <div class="col-6" *ngFor="let day of allDays">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" [value]="day" (change)="onDayToggle(day, $event)"
+                    [checked]="isDaySelected(day)" />
+                  <label class="form-check-label">{{ day }}</label>
+                </div>
               </div>
             </div>
           </div>
         </form>
       </div>
-      <div class="modal-footer">
+
+      <div class="modal-footer d-flex justify-content-between">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="EditDoc()">Save changes</button>
       </div>
