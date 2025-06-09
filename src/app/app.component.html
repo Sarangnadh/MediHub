@@ -1,49 +1,71 @@
-<!-- Navigation Bar -->
-<h3>Aura Medical College</h3>
+<!-- Header Title -->
+<header class="bg-light py-2 px-3 d-flex justify-content-between align-items-center">
+  <h5 class="m-0 text-primary">MediHUb</h5>
+</header>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4">
-  <a class="navbar-brand" href="#"><mat-icon>local_hospital</mat-icon></a>
-  <div class="collapse navbar-collapse">
-    <ul class="navbar-nav me-auto">
-      <li class="nav-item"><a class="nav-link active" href="/home">Home</a></li>
-      <li class="nav-item"><a class="nav-link" href="/admin-dashboard" *ngIf="role === 'admin'">Dashboard</a>
-      </li>
-      <li class="nav-item"><a class="nav-link" href="/appointments" *ngIf="role === 'user'">Appointments</a></li>
-      <li class="nav-item"><a class="nav-link" href="/doctors" *ngIf="role === 'admin'">Doctors</a></li>
-      <li class="nav-item"><a class="nav-link" href="/patientsDetails" *ngIf="role === 'admin'">Patients Details</a>
-      </li>
-      <li class="nav-item"><a class="nav-link" href="/contactus">Contact</a></li>
-    </ul>
-  </div>
-
-  <!-- Menu Trigger Button -->
-  <button mat-icon-button [matMenuTriggerFor]="userMenu" class="text-white">
-    <mat-icon>account_circle</mat-icon>
+<!-- Responsive Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary px-3">
+  <!-- Brand & Toggle Button -->
+  <a class="navbar-brand d-flex align-items-center" href="#">
+    <mat-icon class="me-1">local_hospital</mat-icon> Aura
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
   </button>
 
-  <!-- Menu Definition -->
-  <mat-menu #userMenu="matMenu">
-    <ng-container *ngIf="isLoggedIn; else loginMenu">
-      <button mat-menu-item [routerLink]="role === 'admin' ? '/admin-dashboard' : '/MyProfile'">
-        <mat-icon>person</mat-icon>
-        <span>Profile</span>
-      </button>
-      <button mat-menu-item routerLink="/contactus">
-        <mat-icon>help_outline</mat-icon>
-        <span>Help</span>
-      </button>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Logout</span>
-      </button>
-    </ng-container>
-    <ng-template #loginMenu>
-      <button mat-menu-item (click)="navigateToLogin()">
-        <mat-icon>login</mat-icon>
-        <span>Login</span>
-      </button>
-    </ng-template>
-  </mat-menu>
+  <!-- Collapsible Nav Items -->
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link active" href="/home">Home</a>
+      </li>
+      <li class="nav-item" *ngIf="role === 'admin'">
+        <a class="nav-link" href="/admin-dashboard">Dashboard</a>
+      </li>
+      <li class="nav-item" *ngIf="role === 'user'">
+        <a class="nav-link" href="/appointments">Appointments</a>
+      </li>
+      <li class="nav-item" *ngIf="role === 'admin'">
+        <a class="nav-link" href="/doctors">Doctors</a>
+      </li>
+      <li class="nav-item" *ngIf="role === 'admin'">
+        <a class="nav-link" href="/patientsDetails">Patients Details</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/contactus">Contact</a>
+      </li>
+    </ul>
+
+    <!-- Account Menu Button -->
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" class="text-white">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </div>
 </nav>
+
+<!-- Account Menu Definition -->
+<mat-menu #userMenu="matMenu">
+  <ng-container *ngIf="isLoggedIn; else loginMenu">
+    <button mat-menu-item [routerLink]="role === 'admin' ? '/admin-dashboard' : '/MyProfile'">
+      <mat-icon>person</mat-icon>
+      <span>Profile</span>
+    </button>
+    <button mat-menu-item routerLink="/contactus">
+      <mat-icon>help_outline</mat-icon>
+      <span>Help</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </ng-container>
+  <ng-template #loginMenu>
+    <button mat-menu-item (click)="navigateToLogin()">
+      <mat-icon>login</mat-icon>
+      <span>Login</span>
+    </button>
+  </ng-template>
+</mat-menu>
 
 <router-outlet></router-outlet>
