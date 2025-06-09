@@ -130,7 +130,7 @@ getUserRole(): string | null {
 
 
 updateAppointmentStatus(id: string, status: string) {
-  return this.http.put(`http://localhost:3000/appointments/updateStatus/${id}`, { status });
+  return this.http.put(`https://medihubserver.onrender.com/appointments/updateStatus/${id}`, { status });
 }
 
 
@@ -142,7 +142,7 @@ getNotifications(): Observable<any> {
   });
 
   return this.http.get<{ notifications: [] }>(
-    'http://localhost:3000/user/notifications',
+    'https://medihubserver.onrender.com/user/notifications',
     { headers }
   );
 }
