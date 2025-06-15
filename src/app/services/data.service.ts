@@ -154,7 +154,10 @@ getNotifications(): Observable<any> {
     return this.http.delete(this.appDelAdmin+`${id}`);
   }
 
-  
+ getUsers() {
+    return this.http.get<User[]>(this.getUserUrl)
+
+  } 
 getApprovedAppointments(): Observable<any> {
   const token = localStorage.getItem('token'); // retrieve JWT from localStorage
 
