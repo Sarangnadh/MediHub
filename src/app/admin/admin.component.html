@@ -6,8 +6,9 @@
                 <li><a routerLink="/admin-dashboard" routerLinkActive="active"
                         [class.active]="activeMenu === 'dashboard'" (click)="setActiveMenu('dashboard')">Dashboard</a>
                 </li>
-                <li><a routerLink="/users" routerLinkActive="active" [class.active]="activeMenu === 'users'"
-                        (click)="setActiveMenu('users')">Users</a></li>
+
+                <li> <a (click)="toggleUsers()" [class.active]="activeMenu === 'users'">Users</a>
+                </li>
                 <li> <a (click)="toggleAppointments()" [class.active]="activeMenu === 'appointments'">Appointments</a>
                 </li>
                 <li><a routerLink="/patientsDetails" routerLinkActive="active"
@@ -39,10 +40,14 @@
                 <h3>Active Doctors</h3>
                 <p>{{ activeDoctors }}</p>
             </div>
+            <div class="card">
+                <h3>Active Users</h3>
+                <p>{{ totalusers}}</p>
+            </div>
         </section>
 
 
-        <section class="charts" *ngIf="!showAppointments">
+        <section class="charts" *ngIf="!showAppointments && !showUsers">
             <div class="chart-card">
                 <apx-chart *ngIf="lineChartOptions" [series]="lineChartOptions.series" [chart]="lineChartOptions.chart"
                     [xaxis]="lineChartOptions.xaxis">
@@ -55,7 +60,7 @@
             </div>
         </section>
 
-        <section class="appointments" *ngIf="!showAppointments">
+        <section class="appointments" *ngIf="!showAppointments&&!showUsers">
             <h3>Recent Appointments</h3>
             <table>
                 <thead>
@@ -72,7 +77,7 @@
                         <td>{{ appointment.name }}</td>
                         <td>{{ appointment.doctor }}</td>
                         <td>{{ appointment.date | date }}</td>
-                        <td>{{ appointment.time  }}</td>
+                        <td>{{ appointment.time }}</td>
 
                         <td><span [ngClass]="{
                              'badge bg-warning text-dark': appointment.status === 'Status waiting',
@@ -87,8 +92,8 @@
             </table>
         </section>
 
-        <section class="appointments p-4 rounded shadow bg-light" *ngIf="!showAppointments">
-            <h3 class="mb-4 text-primary fw-bold">Recent Appointments</h3>
+        <section class="appointments p-4 rounded shadow bg-light" *ngIf="!showAppointments && !showUsers">
+            <h3 class="mb-4 text-primary fw-bold">Update Appointment</h3>
             <table class="table table-hover table-striped align-middle">
                 <thead class="table-dark">
                     <tr>
@@ -134,14 +139,16 @@
                 </tbody>
             </table>
             <div class="text-end mt-3">
-                <button class="btn btn-primary"[disabled]="!selectStatus()" (click)="updateStatus()">
+                <button class="btn btn-primary" [disabled]="!selectStatus()" (click)="updateStatus()">
                     Update Status
                 </button>
             </div>
         </section>
-
+        <!-- user-list.component.html -->
+      <app-users *ngIf="showUsers"></app-users>
+      
         <!-- My Appointments Section -->
-        <div class="container py-4" *ngIf="showAppointments">
+        <div class="container py-4" *ngIf="showAppointments && !showUsers">
             <h3 class="fw-bold mb-4">My Appointments</h3>
             <div *ngIf="bookedAppointments.length > 0; else noAppointments">
                 <div *ngFor="let appt of bookedAppointments; let i = index"

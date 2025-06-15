@@ -16,6 +16,9 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from '../user';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { UsersComponent } from "../pages/users/users.component";
 
 export type LineChartOptions = {
   series: ApexAxisChartSeries;
@@ -31,7 +34,7 @@ export type PieChartOptions = {
 };
 @Component({
   selector: 'app-admin',
-  imports: [CommonModule, NgApexchartsModule,RouterModule,MatIcon,MatIconButton,ReactiveFormsModule,FormsModule],
+  imports: [CommonModule, NgApexchartsModule, RouterModule, MatIcon, MatIconButton, ReactiveFormsModule, FormsModule,  UsersComponent],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css',
   animations: [
@@ -47,27 +50,43 @@ export class AdminComponent implements OnInit{
  totalPatients = 0;
   totalAppointments = 0;
   activeDoctors = 0;
+  totalusers=0
   recentAppointments: Appointment[] = [];
   bookedAppointments: Appointment[] = [];
-
+allUsers:User[]=[];
    lineChartOptions!: LineChartOptions;
   pieChartOptions!: PieChartOptions;
   showAppointments = false;
-
+  showUsers = false;
+showDashboard=false
 activeMenu: string = 'dashboard'; 
+
+showSidebar = false;
+
   constructor(private dataService: DataService,private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadDashboardData();
       this.initializeCharts();
-      
   }
- 
-toggleAppointments() {
-  this.showAppointments = true;
-  this.activeMenu = 'appointments'
-}
+ toggleAppointments() {
+    this.showAppointments = true;
+    this.showUsers = false;
+    this.activeMenu = 'appointments';
+  }
 
+  toggleUsers() {
+    this.showUsers = true;
+    this.showAppointments = false;
+    this.activeMenu= 'users';
+  }
+setActiveMenu(menu: string) {
+  this.activeMenu = menu;
+    this.showAppointments=false;
+    this.showDashboard = menu === 'dashboard';
+  this.showUsers = menu === 'users';
+  this.showAppointments = menu === 'appointments';
+}
 selectStatus() :boolean{
    return this.recentAppointments.some(app => 
     app.status !== app.originalStatus && app.status !== ''
@@ -75,9 +94,9 @@ selectStatus() :boolean{
 }
 
 
-setActiveMenu(menu: string) {
-  this.activeMenu = menu;
-    this.showAppointments=false;
+
+toggleSidebar() {
+  this.showSidebar = !this.showSidebar;
 }
 openEditModal(booking: Appointment, index: number){}
 deleteBooking(id: string | undefined) {
@@ -116,6 +135,12 @@ deleteBooking(id: string | undefined) {
       this.initializeCharts();
     });
 
+
+    this.dataService.getUsers().subscribe(users=>{
+      this.totalusers=users.length
+      this.initializeCharts();
+    })
+
     this.dataService.getDoctors().subscribe(doctors => {
       this.activeDoctors = doctors.length;
             this.initializeCharts();
@@ -149,6 +174,7 @@ deleteBooking(id: string | undefined) {
   }
 
 
+
   updateStatus() {
   console.log('All statuses updated:', this.recentAppointments);
   this.recentAppointments.forEach(appointment => {
@@ -156,7 +182,7 @@ deleteBooking(id: string | undefined) {
       this.dataService.updateAppointmentStatus(appointment._id, appointment.status).subscribe({
         next: res => {
           console.log('✅ Status updated:', res);
-            this.snackBar.open('Appointment Status Confirmed successfully!', 'Close', {
+            this.snackBar.open('✅ Appointment Status Confirmed successfully!', 'Close', {
             duration: 3000,
             panelClass: ['snack-success']
           });
@@ -164,7 +190,7 @@ deleteBooking(id: string | undefined) {
         },
          error: (err) => {
           console.error('❌ Error updating status:', err)
-          this.snackBar.open('Failed to confirm appointment. Try again.', 'Close', {
+          this.snackBar.open('❌ Failed to confirm appointment. Try again.', 'Close', {
             duration: 3000,
             panelClass: ['snack-error']
           });
@@ -173,6 +199,8 @@ deleteBooking(id: string | undefined) {
     }
   });
 }
+
+
 initializeChart(dayData: number[]) {
   this.lineChartOptions = {
     series: [
@@ -193,11 +221,11 @@ initializeChart(dayData: number[]) {
 
  initializeCharts() {
         this.pieChartOptions = {
-      series: [this.totalPatients, this.activeDoctors, this.totalAppointments],
+      series: [this.totalPatients, this.activeDoctors, this.totalAppointments,this.totalusers],
       chart: {
         type: 'pie'
       },
-      labels: ['Patients', 'Doctors', 'Appointments'],
+      labels: ['Patients', 'Doctors', 'Appointments','Registered Users'],
       responsive: [
         {
           breakpoint: 480,
