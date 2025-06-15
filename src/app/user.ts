@@ -6,6 +6,8 @@ export interface User {
   email: string;
   password: string;
   role: 'user';
+   createdAt?: string;  
+  updatedAt?: string; 
   appointments?:Appointment[],
    approvedAppointments?: Appointment[];
   cancelledAppointments?: Appointment[];
