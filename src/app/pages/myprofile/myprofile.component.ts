@@ -4,7 +4,7 @@ import { DataService } from '../../services/data.service';
 import { CommonModule } from '@angular/common';
 import { MatCard, MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import {  MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
@@ -14,7 +14,7 @@ import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionP
 
 @Component({
   selector: 'app-myprofile',
-  imports: [CommonModule,MatCard,MatCardModule,
+  imports: [CommonModule, MatCard, MatCardModule,
     MatButtonModule,
     MatTabsModule,
     MatIconModule,
@@ -22,57 +22,75 @@ import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionP
     MatSidenavModule,
     MatExpansionPanel,
     MatExpansionPanelHeader,
-    MatExpansionPanel,MatExpansionPanelHeader,MatExpansionPanelTitle,MatAccordion,
-     MatToolbarModule],
+    MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatAccordion,
+    MatToolbarModule],
   templateUrl: './myprofile.component.html',
   styleUrl: './myprofile.component.css'
 })
 export class MyprofileComponent implements OnInit {
- name: string | null = '';
+  name: string | null = '';
   email: string | null = '';
-  
-  appointments: Appointment[] = [];
+
   bookedAppointments: Appointment[] = [];
-  approvedAppointments = [];
-  cancelledAppointments = [];
+  approvedAppointments: Appointment[] = [];
+  cancelledAppointments: Appointment[] = []
 
-notifications: { message: string ,date:Date}[] = [];
-selectedTab = 0;
-isMobile: boolean = false;
-createdAt = new Date('2024-01-10');
-@ViewChild('drawer') drawer!: MatDrawer;
+  notifications: { message: string, date: Date }[] = [];
+  selectedTab = 0;
+  isMobile: boolean = false;
+  createdAt = new Date('2024-01-10');
+  @ViewChild('drawer') drawer!: MatDrawer;
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     this.name = localStorage.getItem('name');
     this.email = localStorage.getItem('email');
- this.getAppointments();
- this.getNotifications();
-    
-this.checkScreenSize();
-  window.addEventListener('resize', () => this.checkScreenSize());
+    this.getAppointments();
+    this.getNotifications();
+    this.getApprovedApointments();
+    this.getCancelledApointments();
+    this.checkScreenSize();
+    window.addEventListener('resize', () => this.checkScreenSize());
   }
-  
+
   checkScreenSize() {
-  this.isMobile = window.innerWidth <= 768;
-}
+    this.isMobile = window.innerWidth <= 768;
+  }
   getAppointments() {
-    this.dataService.getBookingDetails().subscribe(result => {
-      console.log(result);
-      this.bookedAppointments = result
+    this.dataService.getBookingDetails().subscribe({
+      next: (result) => {
+        console.log('booking', result);
+        this.bookedAppointments = result
+      },
+      error: (err) => {
+        console.error('Failed to fetch Appointments', err);
+      }
     })
   }
-getNotifications() {
-  this.dataService.getNotifications().subscribe({
-    next: (response) => {
-      console.log('Notifications:', response);
-      this.notifications = response.notifications;
-    },
-    error: (err) => {
-      console.error('Failed to fetch notifications', err);
-    }
-  });
-}
+  getNotifications() {
+    this.dataService.getNotifications().subscribe({
+      next: (response) => {
+        console.log('Notifications:', response);
+        this.notifications = response.notifications;
+      },
+      error: (err) => {
+        console.error('Failed to fetch notifications', err);
+      }
+    });
+  }
+  getApprovedApointments() {
+    this.dataService.getApprovedAppointments().subscribe(result => {
+      console.log("approved", result);
+      this.approvedAppointments = result.ApprovedAppointments
 
+    })
+  }
+ getCancelledApointments() {
+    this.dataService.getCancelledAppointments().subscribe(result => {
+      console.log("cancelled", result);
+      this.cancelledAppointments = result.CancelledAppointments
+
+    })
+  }
 }
