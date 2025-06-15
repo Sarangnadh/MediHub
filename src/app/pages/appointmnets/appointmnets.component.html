@@ -95,7 +95,8 @@
           <div class="card-body position-relative">
             <div class="position-absolute top-0 end-0 p-2 d-flex gap-2">
               <button mat-icon-button color="primary" matTooltip="Edit" data-bs-toggle="modal"
-                data-bs-target="#bookingEditModal" (click)="openEditModal(appt,i)" [disabled]="appt.status === 'Approved'">
+                data-bs-target="#bookingEditModal" (click)="openEditModal(appt,i)"
+                [disabled]="appt.status === 'Approved'">
                 <mat-icon>edit</mat-icon>
               </button>
               <button mat-icon-button color="warn" matTooltip="Delete" (click)="deleteBooking(appt._id)">
@@ -109,6 +110,7 @@
             <p>
               <strong>Status:</strong>
               <span [ngClass]="{
+                'badge bg-success text-dark': appt.status === 'Approved',
                 'badge bg-warning text-dark': appt.status === 'Status waiting',
                 'badge bg-info text-dark': appt.status === 'processing for confirmation',
                 'badge bg-danger': appt.status === 'Staus pending...'
