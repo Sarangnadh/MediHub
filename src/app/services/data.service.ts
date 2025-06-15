@@ -13,95 +13,94 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class DataService {
 
-doctors = 'https://medihubserver.onrender.com/doctors/getall';
-adddoctor='https://medihubserver.onrender.com/doctors/add'
-editdoctor='https://medihubserver.onrender.com/doctors/edit/'
-deletedoctor='https://medihubserver.onrender.com/doctors/delete/';
+  doctors = 'http://localhost:3000/doctors/getall';
+  adddoctor = 'http://localhost:3000/doctors/add'
+  editdoctor = 'http://localhost:3000/doctors/edit/'
+  deletedoctor = 'http://localhost:3000/doctors/delete/';
 
-addpatient='https://medihubserver.onrender.com/patients/addpatient'
-patientsDetails = 'https://medihubserver.onrender.com/patients/getPatients';
-updatepatient='https://medihubserver.onrender.com/patients/updatedPatientsDetails/'
-deletepatientData='https://medihubserver.onrender.com/patients/deletePatientDetails/'
-
-
-addbooking='https://medihubserver.onrender.com/appointments/bookappointment'
-getbooking='https://medihubserver.onrender.com/appointments/appointmentDetails'
-editbooking='https://medihubserver.onrender.com/appointments/editAppointment/'
-deletebooking='https://medihubserver.onrender.com/appointments/deleteAppointment/'
-allBooking='https://medihubserver.onrender.com/appointments/allAppointmentDetails'
+  addpatient = 'http://localhost:3000/patients/addpatient'
+  patientsDetails = 'http://localhost:3000/patients/getPatients';
+  updatepatient = 'http://localhost:3000/patients/updatedPatientsDetails/'
+  deletepatientData = 'http://localhost:3000/patients/deletePatientDetails/'
 
 
- registerUserUrl = 'https://medihubserver.onrender.com/user/registerUser';
-  registerAdminUrl = 'https://medihubserver.onrender.com/admin/registerAdmin';
-
-  loginUserUrl = 'https://medihubserver.onrender.com/user/loginUser';
-loginAdminUrl = 'https://medihubserver.onrender.com/admin/loginAdmin';
-appDelAdmin='https://medihubserver.onrender.com/admin/deleteAppointment/'
-
-  constructor(private http:HttpClient) { }
-
-getDoctors()
-{
-  return this.http.get<Doctor[]>(this.doctors)
-}
-addDoctor(newDoctor: Doctor){
-return this.http.post<Doctor[]>(this.adddoctor,newDoctor)
-}
+  addbooking = 'http://localhost:3000/appointments/bookappointment'
+  getbooking = 'http://localhost:3000/appointments/appointmentDetails'
+  editbooking = 'http://localhost:3000/appointments/editAppointment/'
+  deletebooking = 'http://localhost:3000/appointments/deleteAppointment/'
+  allBooking = 'http://localhost:3000/appointments/allAppointmentDetails'
 
 
-editDoctor(id: string, updatedDoctor: Doctor) {
-   
-  return this.http.put<Doctor>(this.editdoctor+`${id}`, updatedDoctor);
-}
+  registerUserUrl = 'http://localhost:3000/user/registerUser';
+  loginUserUrl = 'http://localhost:3000/user/loginUser';
+  getUserUrl = 'http://localhost:3000/user/getallusers';
+CancelledAppointents='http://localhost:3000/user/cancelledAppointments'
+ApprovedAppointments='http://localhost:3000/user/approvedAppointments'
+
+  registerAdminUrl = 'http://localhost:3000/admin/registerAdmin';
+  loginAdminUrl = 'http://localhost:3000/admin/loginAdmin';
+  appDelAdmin = 'http://localhost:3000/admin/deleteAppointment/'
+
+  constructor(private http: HttpClient) { }
+
+  getDoctors() {
+    return this.http.get<Doctor[]>(this.doctors)
+  }
+  addDoctor(newDoctor: Doctor) {
+    return this.http.post<Doctor[]>(this.adddoctor, newDoctor)
+  }
 
 
-  deleteDoctor(id: string)  {
-    return this.http.delete(this.deletedoctor+`${id}`);
+  editDoctor(id: string, updatedDoctor: Doctor) {
+
+    return this.http.put<Doctor>(this.editdoctor + `${id}`, updatedDoctor);
+  }
+
+
+  deleteDoctor(id: string) {
+    return this.http.delete(this.deletedoctor + `${id}`);
   }
 
 
   // PatientsAPICall
-  addPatient(newPatient:Patient){
-    return this.http.post<Patient>(this.addpatient,newPatient)
+  addPatient(newPatient: Patient) {
+    return this.http.post<Patient>(this.addpatient, newPatient)
   }
 
-  getPatientsDetails()
-{
-  return this.http.get<Patient[]>(this.patientsDetails)
-}
+  getPatientsDetails() {
+    return this.http.get<Patient[]>(this.patientsDetails)
+  }
   updatePatientDetails(id: string, updatedPatient: Patient) {
-    return this.http.put<Patient>(this.updatepatient +`${id}`, updatedPatient);
+    return this.http.put<Patient>(this.updatepatient + `${id}`, updatedPatient);
   }
 
-  deletePatient(id: string)  {
-    return this.http.delete(this.deletepatientData+`${id}`);
+  deletePatient(id: string) {
+    return this.http.delete(this.deletepatientData + `${id}`);
   }
 
 
   // Appointment API Call
 
-  addAppointment(newAppointment:Appointment){
-    
-    return this.http.post<Appointment>(this.addbooking,newAppointment)
+  addAppointment(newAppointment: Appointment) {
+
+    return this.http.post<Appointment>(this.addbooking, newAppointment)
   }
- getBookingDetails()
-{
-  return this.http.get<Appointment[]>(this.getbooking)
-}
+  getBookingDetails() {
+    return this.http.get<Appointment[]>(this.getbooking)
+  }
 
-editBooking(id: string, updatedAppointments: Appointment) {
-   
-  return this.http.put<Appointment>(this.editbooking+`${id}`, updatedAppointments);
-}
+  editBooking(id: string, updatedAppointments: Appointment) {
 
-deleteAppointment(id: string)  {
-  return this.http.delete(this.deletebooking+`${id}`);
-}
+    return this.http.put<Appointment>(this.editbooking + `${id}`, updatedAppointments);
+  }
 
- allBookingDetails()
-{
-  return this.http.get<Appointment[]>(this.allBooking)
-}
+  deleteAppointment(id: string) {
+    return this.http.delete(this.deletebooking + `${id}`);
+  }
+
+  allBookingDetails() {
+    return this.http.get<Appointment[]>(this.allBooking)
+  }
   // Registration API
   registerUser(userData: User): Observable<any> {
     return this.http.post(this.registerUserUrl, userData);
@@ -111,44 +110,76 @@ deleteAppointment(id: string)  {
     return this.http.post(this.registerAdminUrl, adminData);
   }
 
- loginUser(email: string, password: string): Observable<any> {
-  return this.http.post(this.loginUserUrl, { email, password });
-}
+  loginUser(email: string, password: string): Observable<any> {
+    return this.http.post(this.loginUserUrl, { email, password });
+  }
 
 
-loginAdmin(email: string, password: string): Observable<any> {
-  return this.http.post(this.loginAdminUrl, { email, password });
-}
+  loginAdmin(email: string, password: string): Observable<any> {
+    return this.http.post(this.loginAdminUrl, { email, password });
+  }
 
-isLoggedIn(): boolean {
-  return localStorage.getItem('isLoggedIn') === 'true';
-}
+  isLoggedIn(): boolean {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  }
 
-getUserRole(): string | null {
-  return localStorage.getItem('role');
-}
-
-
-updateAppointmentStatus(id: string, status: string) {
-  return this.http.put(`https://medihubserver.onrender.com/appointments/updateStatus/${id}`, { status });
-}
+  getUserRole(): string | null {
+    return localStorage.getItem('role');
+  }
 
 
-getNotifications(): Observable<any> {
-  const token = localStorage.getItem('token'); // Assuming you store JWT token in localStorage
+  updateAppointmentStatus(id: string, status: string) {
+    return this.http.put(`http://localhost:3000/appointments/updateStatus/${id}`, { status });
+  }
+
+adminDeleteAppointment(id: string): Observable<any> {
+    return this.http.delete(this.appDelAdmin + `${id}`);
+  }
+  
+  getUsers() {
+    return this.http.get<User[]>(this.getUserUrl)
+
+  }
+
+  getNotifications(): Observable<any> {
+    const token = localStorage.getItem('token'); // Assuming you store JWT token in localStorage
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get<{ notifications: [] }>(
+      'http://localhost:3000/user/notifications',
+      { headers }
+    );
+  }
+  
+
+getApprovedAppointments(): Observable<any> {
+  const token = localStorage.getItem('token'); // retrieve JWT from localStorage
 
   const headers = new HttpHeaders({
     'Authorization': `Bearer ${token}`
   });
 
-  return this.http.get<{ notifications: [] }>(
-    'https://medihubserver.onrender.com/user/notifications',
+  return this.http.get<{ ApprovedAppointments: Appointment[] }>(
+    this.ApprovedAppointments,
     { headers }
   );
 }
- adminDeleteAppointment(id: string): Observable<any> {
-    return this.http.delete(this.appDelAdmin+`${id}`);
-  }
+getCancelledAppointments(): Observable<{ CancelledAppointments: Appointment[] }> {
+  const token = localStorage.getItem('token');
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.get<{ CancelledAppointments: Appointment[] }>(
+    this.CancelledAppointents, // make sure this points to the correct URL
+    { headers }
+  );
+}
+
 
 }
 
