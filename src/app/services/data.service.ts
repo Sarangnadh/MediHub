@@ -32,11 +32,15 @@ allBooking='https://medihubserver.onrender.com/appointments/allAppointmentDetail
 
 
  registerUserUrl = 'https://medihubserver.onrender.com/user/registerUser';
-  registerAdminUrl = 'https://medihubserver.onrender.com/admin/registerAdmin';
+ loginUserUrl = 'https://medihubserver.onrender.com/user/loginUser';
 
-  loginUserUrl = 'https://medihubserver.onrender.com/user/loginUser';
+    registerAdminUrl = 'https://medihubserver.onrender.com/admin/registerAdmin';
 loginAdminUrl = 'https://medihubserver.onrender.com/admin/loginAdmin';
 appDelAdmin='https://medihubserver.onrender.com/admin/deleteAppointment/'
+
+ getUserUrl = 'http://localhost:3000/user/getallusers';
+CancelledAppointents='http://localhost:3000/user/cancelledAppointments'
+ApprovedAppointments='http://localhost:3000/user/approvedAppointments'
 
   constructor(private http:HttpClient) { }
 
@@ -150,6 +154,31 @@ getNotifications(): Observable<any> {
     return this.http.delete(this.appDelAdmin+`${id}`);
   }
 
+  
+getApprovedAppointments(): Observable<any> {
+  const token = localStorage.getItem('token'); // retrieve JWT from localStorage
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.get<{ ApprovedAppointments: Appointment[] }>(
+    this.ApprovedAppointments,
+    { headers }
+  );
+}
+getCancelledAppointments(): Observable<{ CancelledAppointments: Appointment[] }> {
+  const token = localStorage.getItem('token');
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.get<{ CancelledAppointments: Appointment[] }>(
+    this.CancelledAppointents, // make sure this points to the correct URL
+    { headers }
+  );
+}
 }
 
 
