@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { User } from '../../user';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class MyprofileComponent implements OnInit {
   name: string | null = '';
   email: string | null = '';
 
+  userDetail:User[]=[];
   bookedAppointments: Appointment[] = [];
   approvedAppointments: Appointment[] = [];
   cancelledAppointments: Appointment[] = []
@@ -54,6 +56,8 @@ export class MyprofileComponent implements OnInit {
     this.getDeletedAppointments();
     this.checkScreenSize();
     window.addEventListener('resize', () => this.checkScreenSize());
+          this.getUsers();
+
   }
 
   checkScreenSize() {
@@ -106,6 +110,13 @@ getDeletedAppointments() {
       console.error("Failed to fetch deleted appointments", err);
     }
   });
+}
+getUsers()
+{
+   this.dataService.getUsers().subscribe(result => {
+      console.log("users",result);
+      this.userDetail = result
+    })
 }
 
 }
