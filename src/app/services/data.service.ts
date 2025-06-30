@@ -33,14 +33,16 @@ allBooking='https://medihubserver.onrender.com/appointments/allAppointmentDetail
 
  registerUserUrl = 'https://medihubserver.onrender.com/user/registerUser';
  loginUserUrl = 'https://medihubserver.onrender.com/user/loginUser';
+ getUserUrl = 'https://medihubserver.onrender.com/user/getallusers';
+
+CancelledAppointents='https://medihubserver.onrender.com/user/cancelledAppointments'
+ApprovedAppointments='https://medihubserver.onrender.com/user/approvedAppointments'
+appointmentDeleteByUser='https://medihubserver.onrender.com/appointments/user-deleted';
+
 
     registerAdminUrl = 'https://medihubserver.onrender.com/admin/registerAdmin';
 loginAdminUrl = 'https://medihubserver.onrender.com/admin/loginAdmin';
 appDelAdmin='https://medihubserver.onrender.com/admin/deleteAppointment/'
-
- getUserUrl = 'https://medihubserver.onrender.com/user/getallusers';
-CancelledAppointents='https://medihubserver.onrender.com/user/cancelledAppointments'
-ApprovedAppointments='https://medihubserver.onrender.com/user/approvedAppointments'
 
   constructor(private http:HttpClient) { }
 
