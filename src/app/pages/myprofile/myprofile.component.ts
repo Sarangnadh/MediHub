@@ -41,7 +41,6 @@ export class MyprofileComponent implements OnInit {
   notifications: { message: string, date: Date }[] = [];
   selectedTab = 0;
   isMobile: boolean = false;
-  createdAt = new Date('2024-01-10');
   @ViewChild('drawer') drawer!: MatDrawer;
 
   constructor(private dataService: DataService) { }
