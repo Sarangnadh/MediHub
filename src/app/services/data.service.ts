@@ -138,6 +138,7 @@ updateAppointmentStatus(id: string, status: string) {
 }
 
 
+
 getNotifications(): Observable<any> {
   const token = localStorage.getItem('token'); // Assuming you store JWT token in localStorage
 
@@ -181,6 +182,11 @@ getCancelledAppointments(): Observable<{ CancelledAppointments: Appointment[] }>
     this.CancelledAppointents, // make sure this points to the correct URL
     { headers }
   );
+}
+getUserDeletedAppointments(): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.get(this.appointmentDeleteByUser, { headers });
 }
 }
 

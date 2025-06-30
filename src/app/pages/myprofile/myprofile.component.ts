@@ -34,6 +34,7 @@ export class MyprofileComponent implements OnInit {
   bookedAppointments: Appointment[] = [];
   approvedAppointments: Appointment[] = [];
   cancelledAppointments: Appointment[] = []
+  deletedAppointments: Appointment[] = [];
 
   notifications: { message: string, date: Date }[] = [];
   selectedTab = 0;
@@ -50,6 +51,7 @@ export class MyprofileComponent implements OnInit {
     this.getNotifications();
     this.getApprovedApointments();
     this.getCancelledApointments();
+    this.getDeletedAppointments();
     this.checkScreenSize();
     window.addEventListener('resize', () => this.checkScreenSize());
   }
@@ -93,4 +95,17 @@ export class MyprofileComponent implements OnInit {
 
     })
   }
+
+getDeletedAppointments() {
+  this.dataService.getUserDeletedAppointments().subscribe({
+    next: (result) => {
+      console.log("Deleted Appointments", result);
+      this.deletedAppointments = result.userDeletedAppointments;
+    },
+    error: (err) => {
+      console.error("Failed to fetch deleted appointments", err);
+    }
+  });
+}
+
 }
