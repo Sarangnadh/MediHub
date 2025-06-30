@@ -125,7 +125,7 @@
                         </td>
                         <td>
                             <select class="form-select" [(ngModel)]="appointment.status"
-                                [disabled]="appointment.status === 'Approved'" (change)="selectStatus()">
+                                [disabled]="appointment.status === 'Approved'|| appointment.status==='Booking Rejected'" (change)="selectStatus()">
                                 <option disabled selected value="">Select Status</option>
                                 <option>Approved</option>
                                 <option>pending for Approving.</option>
