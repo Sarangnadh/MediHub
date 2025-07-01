@@ -1,18 +1,17 @@
-import { CanActivateFn } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 
 export const authGuard: CanActivateFn = (route, state) => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+ const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
- if ((state.url === '/login' || state.url === '/register') && isLoggedIn) {
+  const router = inject(Router);
+
+  // Allow only if token and role are set
+  if (token && (role === 'admin' || role === 'user')) {
+    return true;
+  } else {
+    alert('You must log in to access this page');
+    router.navigate(['/login']);
     return false;
   }
-  if (!isLoggedIn) return false;
-
-  // Example: protect admin route
-  if (state.url.startsWith('/home') && role !== 'admin') return false;
-
-  // Example: protect user route
-
-  
-  return true;
 };
