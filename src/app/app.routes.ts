@@ -1,4 +1,4 @@
-import { Routes ,} from '@angular/router';
+import { Routes, } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { DoctorsPageComponent } from './pages/doctors-page/doctors-page.component';
 import { AppointmnetsComponent } from './pages/appointmnets/appointmnets.component';
@@ -13,54 +13,55 @@ import { DoctorViewComponent } from './pages/doctor-view/doctor-view.component';
 
 export const routes: Routes = [
     {
-        path:'home',
-        component:HomeComponent,
+        path: 'home',
+        component: HomeComponent,
     },
     {
-        path:'',redirectTo:'home',
-        pathMatch:'full'
+        path: '', redirectTo: 'home',
+        pathMatch: 'full'
     },
     {
-        path:'doctors',
-        component:DoctorsPageComponent,
-        
+        path: 'doctors',
+        component: DoctorsPageComponent,
+
     },
     {
-        path:'patientsDetails',
-        component:PatientsComponent
+        path: 'patientsDetails',
+        component: PatientsComponent
     },
     {
-        path:'appointments',
-        component:AppointmnetsComponent,
-      
-        
+        path: 'appointments',
+        component: AppointmnetsComponent,
+
+
     },
     {
-        path:'contactus',
-        component:ContactComponent
+        path: 'contactus',
+        component: ContactComponent
     },
-     {
-        path:'login',
-        component:LoginComponent,
-        
+    {
+        path: 'login',
+        component: LoginComponent,
+
     },
-     {
-        path:'register',
-        component:RegisterComponent,
+    {
+        path: 'register',
+        component: RegisterComponent,
     },
-     {
+    {
         path: 'doctorView',
         component: DoctorViewComponent,
-        
+        canActivate: [authGuard]
+
     },
-{
-    path:'admin-dashboard',
-    component:AdminComponent,
-    canActivate:[authGuard]
-},
-{
-    path:'MyProfile',
-    component:MyprofileComponent,
-    canActivate:[authGuard]
-}
+    {
+        path: 'admin-dashboard',
+        component: AdminComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'MyProfile',
+        component: MyprofileComponent,
+        canActivate: [authGuard]
+    }
 ];
