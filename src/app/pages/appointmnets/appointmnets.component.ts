@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -57,15 +57,16 @@ export class AppointmnetsComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder, private data: DataService, private snackBar: MatSnackBar, private dialog: MatDialog,) {
     this.appointmentForm = this.fb.group({
-      name: ['', Validators.required],
-      age: ['', Validators.required],
+      name: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+      age: ['', [Validators.required,Validators.pattern('^[0-9]{2}$')]],
       doctor: ['', Validators.required],
-      date: ['', Validators.required],
+      date: ['', [Validators.required,this.pastDatevalidation]],
       time: ['', Validators.required],
-      phone: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required,Validators.pattern('^[0-9]{10}$')]],
+      email: ['', [Validators.required, Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)]],
       notes: ['']
-    });
+    },
+  );
     this.getAppointments();
     console.log(this.getAppointments());
 
@@ -80,6 +81,8 @@ export class AppointmnetsComponent implements OnInit, OnDestroy {
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe(); // Cleanup on destroy
     }
+    console.log("destory");
+    
   }
 
   loadDoctors() {
@@ -92,7 +95,14 @@ export class AppointmnetsComponent implements OnInit, OnDestroy {
       this.getAppointments();
     });
   }
-isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+ isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+  pastDatevalidation(control:AbstractControl): ValidationErrors | null{
+const selectedDate =new Date(control.value);
+const today =new Date();
+today.setHours(0,0,0,0);
+return selectedDate >=today ? null :{pastDate:true}
+  }
 
 toggleForm() {
   if (!this.isLoggedIn) {
@@ -122,7 +132,6 @@ toggleAppointments() {
       doc.name.toLowerCase().includes(query) ||
       doc.specialty.toLowerCase().includes(query)
     );
-
   }
 
   getAppointmentStatus(date: Date | string): string {

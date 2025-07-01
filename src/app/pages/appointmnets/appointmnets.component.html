@@ -110,7 +110,7 @@
             <p>
               <strong>Status:</strong>
               <span [ngClass]="{
-                'badge bg-success text-dark': appt.status === 'Approved',
+                 'badge bg-success text-dark': appt.status === 'Approved',
                 'badge bg-warning text-dark': appt.status === 'Status waiting',
                 'badge bg-info text-dark': appt.status === 'processing for confirmation',
                 'badge bg-danger': appt.status === 'Staus pending...'
@@ -133,24 +133,56 @@
       <div class="row justify-content-center">
         <div class="col-12 col-md-6">
           <form [formGroup]="appointmentForm" (ngSubmit)="addBooking()" class="mt-4">
-            <mat-form-field class="w-100"><input matInput placeholder="Name" formControlName="name"></mat-form-field>
-            <mat-form-field class="w-100"><input matInput placeholder="Age" type="number"
-                formControlName="age"></mat-form-field>
+
+            <mat-form-field class="w-100"><input matInput placeholder="Name" formControlName="name">
+              <div *ngIf="appointmentForm.get('name')?.errors && appointmentForm.get('name')?.touched" class="error">
+                <small *ngIf="appointmentForm.get('name')?.errors?.['required']">Name is required.</small>
+                <small *ngIf="appointmentForm.get('name')?.errors?.['pattern']">Only alphabets and spaces are
+                  allowed.</small>
+              </div>
+            </mat-form-field>
+
+            <mat-form-field class="w-100"><input matInput placeholder="Age" type="number" formControlName="age">
+              <div *ngIf="appointmentForm.get('age')?.errors && appointmentForm.get('age')?.touched" class="error">
+                <small *ngIf="appointmentForm.get('age')?.errors?.['required']">Age is required.</small>
+                <small *ngIf="appointmentForm.get('age')?.errors?.['pattern']">Invalid data.</small>
+              </div>
+            </mat-form-field>
+
             <mat-form-field class="w-100">
               <mat-select placeholder="Select Doctor" formControlName="doctor">
                 <mat-option *ngFor="let doc of formValueDoc" [value]="doc.name">{{ doc.name }}</mat-option>
               </mat-select>
             </mat-form-field>
+
             <mat-form-field class="w-100">
               <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="date">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
+              <div *ngIf="appointmentForm.get('date')?.touched && appointmentForm.get('date')?.invalid" class="error">
+                <small *ngIf="appointmentForm.get('date')?.errors?.['required']">Date is
+                  required.</small>
+                <small *ngIf="appointmentForm.get('date')?.errors?.['pastDate']">Booking date cannot be in the
+                  past.</small>
+              </div>
             </mat-form-field>
+
             <mat-form-field class="w-100"><input matInput type="time" formControlName="time"></mat-form-field>
-            <mat-form-field class="w-100"><input matInput placeholder="Phone" type="tel"
-                formControlName="phone"></mat-form-field>
-            <mat-form-field class="w-100"><input matInput placeholder="Email" type="email"
-                formControlName="email"></mat-form-field>
+
+            <mat-form-field class="w-100"><input matInput placeholder="Phone" type="tel" formControlName="phone">
+              <div *ngIf="appointmentForm.get('phone')?.errors && appointmentForm.get('phone')?.touched" class="error">
+                <small *ngIf="appointmentForm.get('phone')?.errors?.['required']">Phone number is required.</small>
+                <small *ngIf="appointmentForm.get('phone')?.errors?.['pattern']">Invalid phone number.</small>
+              </div>
+            </mat-form-field>
+
+            <mat-form-field class="w-100"><input matInput placeholder="Email" type="email" formControlName="email">
+              <div *ngIf="appointmentForm.get('email')?.errors && appointmentForm.get('email')?.touched" class="error">
+                <small *ngIf="appointmentForm.get('email')?.errors?.['required']">Email is required.</small>
+                <small *ngIf="appointmentForm.get('email')?.errors?.['pattern']">Invalid email address.Gmail is required</small>
+              </div>
+            </mat-form-field>
+
             <mat-form-field class="w-100"><textarea matInput placeholder="Notes"
                 formControlName="notes"></textarea></mat-form-field>
             <button mat-raised-button color="accent" class="w-100" type="submit"
@@ -193,12 +225,21 @@
           <div class="mb-3">
             <label class="form-label">Patient Name</label>
             <input type="text" class="form-control" formControlName="name" required />
+            <div *ngIf="appointmentForm.get('name')?.errors && appointmentForm.get('name')?.touched" class="error">
+                <small *ngIf="appointmentForm.get('name')?.errors?.['required']">Name is required.</small>
+                <small *ngIf="appointmentForm.get('name')?.errors?.['pattern']">Only alphabets and spaces are
+                  allowed.</small>
+              </div>
           </div>
 
           <!-- Age -->
           <div class="mb-3">
             <label class="form-label">Age</label>
             <input type="number" class="form-control" formControlName="age" required />
+             <div *ngIf="appointmentForm.get('age')?.errors && appointmentForm.get('age')?.touched" class="error">
+                <small *ngIf="appointmentForm.get('age')?.errors?.['required']">Age is required.</small>
+                <small *ngIf="appointmentForm.get('age')?.errors?.['pattern']">Invalid data.</small>
+              </div>
           </div>
 
           <!-- Doctor -->
@@ -211,6 +252,12 @@
           <div class="mb-3">
             <label class="form-label">Date</label>
             <input type="date" class="form-control" formControlName="date" required />
+             <div *ngIf="appointmentForm.get('date')?.touched && appointmentForm.get('date')?.invalid" class="error">
+                <small *ngIf="appointmentForm.get('date')?.errors?.['required']">Date is
+                  required.</small>
+                <small *ngIf="appointmentForm.get('date')?.errors?.['pastDate']">Booking date cannot be in the
+                  past.</small>
+              </div>
           </div>
 
           <!-- Time -->
@@ -223,12 +270,20 @@
           <div class="mb-3">
             <label class="form-label">Phone</label>
             <input type="text" class="form-control" formControlName="phone" required />
+               <div *ngIf="appointmentForm.get('phone')?.errors && appointmentForm.get('phone')?.touched" class="error">
+                <small *ngIf="appointmentForm.get('phone')?.errors?.['required']">Phone number is required.</small>
+                <small *ngIf="appointmentForm.get('phone')?.errors?.['pattern']">Invalid phone number.</small>
+              </div>
           </div>
 
           <!-- Email -->
           <div class="mb-3">
             <label class="form-label">Email</label>
             <input type="email" class="form-control" formControlName="email" required />
+            <div *ngIf="appointmentForm.get('email')?.errors && appointmentForm.get('email')?.touched" class="error">
+                <small *ngIf="appointmentForm.get('email')?.errors?.['required']">Email is required.</small>
+                <small *ngIf="appointmentForm.get('email')?.errors?.['pattern']">Invalid email address.Gmail is required</small>
+              </div>
           </div>
 
           <!-- Notes -->
@@ -241,7 +296,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="editbooking()">Save
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!appointmentForm.valid" (click)="editbooking()">Save
           changes</button>
       </div>
     </div>

@@ -12,7 +12,9 @@ mat-card img {
   display: block;
   margin: 0 auto 16px auto;
 }
-
+.error small {
+  color: red;
+}
 /* Snackbar custom styles */
 .snack-success {
   background-color: #4caf50;

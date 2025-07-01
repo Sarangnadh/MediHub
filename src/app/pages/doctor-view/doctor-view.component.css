@@ -1,0 +1,125 @@
+/* Card Container with space-between */
+mat-card {
+  padding: 24px;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Push buttons to bottom */
+  align-items: center;
+  height: 100%;
+  border-radius: 12px;
+  background-color: #ffffff;
+}
+
+mat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Doctor Image */
+mat-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto 16px auto;
+}
+
+/* Wrapped Available Days */
+.available-days {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Buttons container: no wrapping, center aligned, fixed gap */
+.buttons-container {
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 320px; /* Optional max width for button container */
+}
+
+/* Buttons: fixed min-width for consistent size */
+.buttons-container button {
+  min-width: 110px;
+  flex: 1 1 auto;
+}
+
+button {
+  margin-right: 8px;
+}
+
+/* Snackbar Custom Styling */
+::ng-deep .snack-success {
+  background-color: #4caf50;
+  color: white;
+}
+
+::ng-deep .snack-error {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Responsive Rules */
+@media (max-width: 768px) {
+  mat-card {
+    padding: 18px;
+  }
+
+  mat-card img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .buttons-container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  mat-card {
+    padding: 14px;
+  }
+
+  mat-card img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .modal-dialog {
+    margin: 1rem;
+  }
+
+  .modal-body,
+  .modal-header,
+  .modal-footer {
+    padding: 1rem;
+  }
+
+  .form-label,
+  .form-check-label {
+    font-size: 0.95rem;
+  }
+
+  .form-control {
+    font-size: 0.95rem;
+  }
+
+  .modal-title {
+    font-size: 1.2rem;
+  }
+
+  .available-days {
+    justify-content: flex-start;
+  }
+}
+
+/* Modal Button Spacing */
+.modal-footer .btn {
+  min-width: 100px;
+}

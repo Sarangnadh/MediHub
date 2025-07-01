@@ -9,6 +9,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { AdminComponent } from './admin/admin.component';
 import { authGuard } from './auth.guard';
 import { MyprofileComponent } from './pages/myprofile/myprofile.component';
+import { DoctorViewComponent } from './pages/doctor-view/doctor-view.component';
 
 export const routes: Routes = [
     {
@@ -46,6 +47,10 @@ export const routes: Routes = [
      {
         path:'register',
         component:RegisterComponent,
+    },
+     {
+        path: 'doctorView',
+        component: DoctorViewComponent
     },
 {
     path:'admin-dashboard',
