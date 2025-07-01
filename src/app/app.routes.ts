@@ -50,7 +50,8 @@ export const routes: Routes = [
     },
      {
         path: 'doctorView',
-        component: DoctorViewComponent
+        component: DoctorViewComponent,
+        
     },
 {
     path:'admin-dashboard',
