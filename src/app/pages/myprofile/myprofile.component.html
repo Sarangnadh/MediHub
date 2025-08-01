@@ -18,11 +18,12 @@
   </mat-drawer>
 
   <mat-drawer-content class="content-area">
-    <mat-card class="profile-card animate-fade-in" *ngFor="let user of userDetail">
- <h2 class="profile-title">Welcome, {{user.name }}</h2>      <mat-card-content>
-         <p><strong>Email:</strong> {{user.email }}</p>
-        <p><strong>Joined:</strong> {{ user.createdAt | date:'mediumDate' }}</p>
-          <p class="mt-3 text-muted"><strong>Last Updated:</strong> {{ user.updatedAt | date:'short' }}</p>
+    <mat-card class="profile-card animate-fade-in" *ngIf="loggedUser">
+      <h2 class="profile-title">Welcome, {{ name }}</h2>
+      <mat-card-content>
+        <p><strong>Email:</strong> {{ loggedUser.email }}</p>
+        <p><strong>Joined:</strong> {{ loggedUser.createdAt | date: 'mediumDate' }}</p>
+        <p class="mt-3 text-muted"><strong>Last Updated:</strong> {{ loggedUser.updatedAt | date: 'short' }}</p>
 
         <!-- Tabs for large screens -->
         <mat-tab-group *ngIf="!isMobile" [(selectedIndex)]="selectedTab" animationDuration="400ms">
@@ -38,11 +39,8 @@
 
           <mat-tab label="Approved">
             <mat-list>
-              <mat-list-item *ngFor="let appts of approvedAppointments">
-                         ✅ {{ appts.date | date: 'fullDate' }} at {{ appts.time }} 
-  With <strong>Dr. {{ appts.doctor }}</strong> 
-                
-                
+              <mat-list-item *ngFor="let appt of approvedAppointments">
+                ✅ {{ appt.date | date: 'fullDate' }} at {{ appt.time }} with <strong>Dr. {{ appt.doctor }}</strong>
               </mat-list-item>
             </mat-list>
           </mat-tab>
@@ -51,20 +49,21 @@
             <mat-list>
               <mat-list-item *ngFor="let appt of cancelledAppointments">
                 ❌ {{ appt.date | date }} - Dr. {{ appt.doctor }}
-                
               </mat-list-item>
             </mat-list>
           </mat-tab>
-  <mat-tab label="Deleted">
-    <mat-list *ngIf="deletedAppointments.length > 0; else noDeleted">
-      <mat-list-item *ngFor="let appt of deletedAppointments">
-        ❌ Deleted: {{ appt.date | date: 'mediumDate' }} with Dr. {{ appt.doctor }}
-      </mat-list-item>
-    </mat-list>
-    <ng-template #noDeleted>
-      <p class="text-muted p-2">No deleted appointments found.</p>
-    </ng-template>
-  </mat-tab>
+
+          <mat-tab label="Deleted">
+            <mat-list *ngIf="deletedAppointments.length > 0; else noDeleted">
+              <mat-list-item *ngFor="let appt of deletedAppointments">
+                ❌ Deleted: {{ appt.date | date: 'mediumDate' }} with Dr. {{ appt.doctor }}
+              </mat-list-item>
+            </mat-list>
+            <ng-template #noDeleted>
+              <p class="text-muted p-2">No deleted appointments found.</p>
+            </ng-template>
+          </mat-tab>
+
           <mat-tab label="Notifications">
             <ng-container *ngIf="notifications.length > 0; else noData">
               <div class="notification-container">
@@ -72,7 +71,7 @@
                   <mat-card-header>
                     <mat-icon mat-card-avatar color="warn">notifications_active</mat-icon>
                     <mat-card-title>{{ note.message }}</mat-card-title>
-                    <mat-card-subtitle>Staus updated at: {{ note.date | date:'medium' }}</mat-card-subtitle>
+                    <mat-card-subtitle>Status updated at: {{ note.date | date: 'medium' }}</mat-card-subtitle>
                   </mat-card-header>
                 </mat-card>
               </div>
@@ -80,7 +79,7 @@
           </mat-tab>
         </mat-tab-group>
 
-        <!-- Accordion for mobile -->
+        <!-- Accordion for mobile screens -->
         <mat-accordion *ngIf="isMobile" class="accordion">
           <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -98,7 +97,7 @@
               <mat-panel-title>Approved</mat-panel-title>
             </mat-expansion-panel-header>
             <mat-list>
-              <mat-list-item *ngFor="let appt of bookedAppointments">
+              <mat-list-item *ngFor="let appt of approvedAppointments">
                 ✅ {{ appt.date | date }} with Dr. {{ appt.doctor }}
               </mat-list-item>
             </mat-list>
@@ -109,13 +108,13 @@
               <mat-panel-title>Cancelled</mat-panel-title>
             </mat-expansion-panel-header>
             <mat-list>
-              <mat-list-item *ngFor="let appt of bookedAppointments">
+              <mat-list-item *ngFor="let appt of cancelledAppointments">
                 ❌ {{ appt.date | date }} - Dr. {{ appt.doctor }}
               </mat-list-item>
             </mat-list>
           </mat-expansion-panel>
 
-           <mat-expansion-panel>
+          <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>Deleted</mat-panel-title>
             </mat-expansion-panel-header>
@@ -136,7 +135,7 @@
                   <mat-card-header>
                     <mat-icon mat-card-avatar color="warn">notifications_active</mat-icon>
                     <mat-card-title>{{ note.message }}</mat-card-title>
-                    <mat-card-subtitle>Status Updated: {{ note.date | date:'medium' }}</mat-card-subtitle>
+                    <mat-card-subtitle>Status Updated: {{ note.date | date: 'medium' }}</mat-card-subtitle>
                   </mat-card-header>
                 </mat-card>
               </div>

@@ -31,6 +31,7 @@ import { User } from '../../user';
 export class MyprofileComponent implements OnInit {
   name: string | null = '';
   email: string | null = '';
+loggedUser?: User;
 
   userDetail:User[]=[];
   bookedAppointments: Appointment[] = [];
@@ -110,12 +111,12 @@ getDeletedAppointments() {
     }
   });
 }
-getUsers()
-{
-   this.dataService.getUsers().subscribe(result => {
-      console.log("users",result);
-      this.userDetail = result
-    })
+getUsers() {
+  const currentEmail = localStorage.getItem('email');
+  this.dataService.getUsers().subscribe(result => {
+    this.userDetail = result;
+    this.loggedUser = this.userDetail.find(user => user.email === currentEmail);
+  });
 }
 
 }
